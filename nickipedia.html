@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michael Jordan - Wikipedia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Liberation Sans', sans-serif;
+            background-color: #f8f9fa;
+            color: #202122;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: #fff;
+            border-bottom: 1px solid #a7d7f9;
+            padding: 10px 0;
+        }
+
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .main-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #a7d7f9;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 400;
+            border-bottom: 1px solid #a2a9b1;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #54595d;
+            margin-bottom: 20px;
+        }
+
+        .infobox {
+            float: right;
+            width: 300px;
+            margin: 0 0 15px 15px;
+            border: 1px solid #a2a9b1;
+            background-color: #f8f9fa;
+            font-size: 14px;
+        }
+
+        .infobox-image {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(135deg, #c41e3a 0%, #000000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 80px;
+            font-weight: bold;
+            border-bottom: 1px solid #a2a9b1;
+        }
+
+        .infobox-content {
+            padding: 15px;
+        }
+
+        .infobox-title {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .infobox-row {
+            margin: 8px 0;
+            display: flex;
+        }
+
+        .infobox-label {
+            font-weight: bold;
+            flex: 0 0 100px;
+        }
+
+        .infobox-value {
+            flex: 1;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border: 1px solid #a2a9b1;
+            padding: 15px;
+            margin: 20px 0;
+            display: inline-block;
+            min-width: 200px;
+        }
+
+        .toc-title {
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .toc-list li {
+            margin: 5px 0;
+        }
+
+        .toc-list a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+
+        .toc-list a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 400;
+            border-bottom: 1px solid #a2a9b1;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .quote {
+            background-color: #f8f9fa;
+            border-left: 4px solid #a2a9b1;
+            padding: 15px 20px;
+            margin: 20px 40px;
+            font-style: italic;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .stats-table th {
+            background-color: #eaecf0;
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #a2a9b1;
+            font-weight: bold;
+        }
+
+        .stats-table td {
+            padding: 8px;
+            border: 1px solid #a2a9b1;
+        }
+
+        .stats-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .reference {
+            margin: 10px 0;
+            padding-left: 20px;
+            text-indent: -20px;
+            font-size: 13px;
+        }
+
+        .reference-number {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .see-also {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 3px solid #a2a9b1;
+        }
+
+        .see-also ul {
+            margin-left: 20px;
+        }
+
+        .external-links {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .external-links li {
+            margin: 8px 0;
+        }
+
+        .categories {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #a2a9b1;
+            font-size: 13px;
+            color: #54595d;
+        }
+
+        sup {
+            font-size: 11px;
+        }
+
+        .award-list {
+            margin-left: 20px;
+        }
+
+        .award-list li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Wikipedia</a>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <h1 class="title">Michael Jordan</h1>
+        <div class="subtitle">From Wikipedia, the free encyclopedia</div>
+
+        <div class="infobox">
+            <div class="infobox-image">23</div>
+            <div class="infobox-content">
+                <div class="infobox-title">Michael Jeffrey Jordan</div>
+                <div class="infobox-row">
+                    <span class="infobox-label">Born:</span>
+                    <span class="infobox-value">February 17, 1963 (age 62)<br>Brooklyn, New York, U.S.</span>
+                </div>
+                <div class="infobox-row">
+                    <span class="infobox-label">Height:</span>
+                    <span class="infobox-value">6 ft 6 in (1.98 m)</span>
+                </div>
+                <div class="infobox-row">
+                    <span class="infobox-label">Position:</span>
+                    <span class="infobox-value">Shooting guard</span>
+                </div>
+                <div class="infobox-row">
+                    <span class="infobox-label">Teams:</span>
+                    <span class="infobox-value">Chicago Bulls (1984–1993, 1995–1998)<br>Washington Wizards (2001–2003)</span>
+                </div>
+                <div class="infobox-row">
+                    <span class="infobox-label">Number:</span>
+                    <span class="infobox-value">23, 45</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="toc">
+            <div class="toc-title">Contents</div>
+            <ul class="toc-list">
+                <li><a href="#early">1 Early life and education</a></li>
+                <li><a href="#college">2 College career</a></li>
+                <li><a href="#nba">3 NBA career</a></li>
+                <li><a href="#championships">4 Championships and achievements</a></li>
+                <li><a href="#legacy">5 Legacy and impact</a></li>
+                <li><a href="#business">6 Business ventures</a></li>
+                <li><a href="#see-also">7 See also</a></li>
+                <li><a href="#references">8 References</a></li>
+                <li><a href="#external">9 External links</a></li>
+            </ul>
+        </div>
+
+        <p><b>Michael Jeffrey Jordan</b> (born February 17, 1963), also known by his initials <b>MJ</b>, is an American businessman and former professional basketball player. He played 15 seasons in the National Basketball Association (NBA) between 1984 and 2003, winning six NBA championships with the Chicago Bulls. He was integral in popularizing basketball and the NBA around the world in the 1980s and 1990s, becoming a global cultural icon.<sup>[1]</sup></p>
+
+        <p>Jordan is widely regarded as the greatest basketball player of all time. His biography on the official NBA website states: "By acclamation, Michael Jordan is the greatest basketball player of all time."<sup>[2]</sup> He was a dominant force on both ends of the court, known for his scoring prowess, defensive intensity, and clutch performances in critical moments.</p>
+
+        <h2 id="early">Early life and education</h2>
+        <p>Michael Jordan was born in Brooklyn, New York, and raised in Wilmington, North Carolina. He is the son of Deloris (née Peoples), who worked in banking, and James R. Jordan Sr., an equipment supervisor. Jordan has four siblings: brothers Larry Jordan and James R. Jordan Jr., and sisters Deloris and Roslyn.<sup>[3]</sup></p>
+
+        <p>Jordan attended Emsley A. Laney High School in Wilmington, where he played basketball, baseball, and football. As a sophomore, he was cut from the varsity basketball team, which became a defining moment in his career. This setback motivated him to work harder, and he eventually became the team's star player.</p>
+
+        <h2 id="college">College career</h2>
+        <p>Jordan accepted a basketball scholarship to the University of North Carolina at Chapel Hill, where he played for coach Dean Smith. As a freshman, Jordan made the game-winning shot in the 1982 NCAA Championship game against Georgetown, which was led by future NBA rival Patrick Ewing.<sup>[4]</sup></p>
+
+        <p>During his three seasons at North Carolina, Jordan averaged 17.7 points per game and was named the ACC Freshman of the Year in 1982. He was selected to the NCAA All-American First Team in both his sophomore and junior years. In 1984, Jordan left North Carolina to enter the NBA Draft, though he returned to complete his degree in geography in 1986.</p>
+
+        <h2 id="nba">NBA career</h2>
+
+        <h3>Chicago Bulls (1984–1993, 1995–1998)</h3>
+        <p>Jordan was selected by the Chicago Bulls with the third overall pick in the 1984 NBA Draft. He quickly emerged as a star, averaging 28.2 points per game in his rookie season and winning the NBA Rookie of the Year Award. His spectacular dunking ability and acrobatic moves earned him the nickname "Air Jordan."<sup>[5]</sup></p>
+
+        <p>Despite early playoff disappointments, Jordan and the Bulls achieved breakthrough success in 1991, defeating the Los Angeles Lakers to win their first NBA championship. This began a period of unprecedented dominance, as the Bulls won six championships in eight years (1991–1993, 1996–1998), achieving two "three-peats."</p>
+
+        <div class="quote">
+            "I've missed more than 9,000 shots in my career. I've lost almost 300 games. Twenty-six times I've been trusted to take the game-winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed."
+            <div style="text-align: right; margin-top: 10px;">— Michael Jordan</div>
+        </div>
+
+        <h3>First retirement and baseball career</h3>
+        <p>In October 1993, Jordan shocked the world by announcing his retirement from basketball following the murder of his father, James Jordan Sr. He pursued a career in professional baseball, signing a minor league contract with the Chicago White Sox organization. Jordan played for the Birmingham Barons, a Double-A minor league team, during the 1994 season.<sup>[6]</sup></p>
+
+        <h3>Return to basketball</h3>
+        <p>Jordan returned to the NBA in March 1995, famously announcing "I'm back" in a simple two-word press release. After a short period of readjustment, he led the Bulls to three consecutive championships from 1996 to 1998, cementing his legacy as the greatest player of his era.</p>
+
+        <h3>Washington Wizards (2001–2003)</h3>
+        <p>After three years of retirement, Jordan returned to play for the Washington Wizards from 2001 to 2003. Though past his prime, he still averaged over 20 points per game in his first season back. He retired for the final time in 2003 at age 40.<sup>[7]</sup></p>
+
+        <h2 id="championships">Championships and achievements</h2>
+
+        <h3>NBA Championships and Finals MVP</h3>
+        <ul class="award-list">
+            <li>6× NBA Champion (1991, 1992, 1993, 1996, 1997, 1998)</li>
+            <li>6× NBA Finals MVP (1991, 1992, 1993, 1996, 1997, 1998)</li>
+            <li>5× NBA Most Valuable Player (1988, 1991, 1992, 1996, 1998)</li>
+            <li>14× NBA All-Star (1985–1993, 1996–1998, 2002–2003)</li>
+            <li>10× NBA scoring champion (1987–1993, 1996–1998)</li>
+            <li>NBA Defensive Player of the Year (1988)</li>
+            <li>NBA Rookie of the Year (1985)</li>
+        </ul>
+
+        <h3>Career statistics</h3>
+        <table class="stats-table">
+            <tr>
+                <th>Category</th>
+                <th>Regular Season</th>
+                <th>Playoffs</th>
+            </tr>
+            <tr>
+                <td>Points per game</td>
+                <td>30.1</td>
+                <td>33.4</td>
+            </tr>
+            <tr>
+                <td>Rebounds per game</td>
+                <td>6.2</td>
+                <td>6.4</td>
+            </tr>
+            <tr>
+                <td>Assists per game</td>
+                <td>5.3</td>
+                <td>5.7</td>
+            </tr>
+            <tr>
+                <td>Steals per game</td>
+                <td>2.3</td>
+                <td>2.1</td>
+            </tr>
+            <tr>
+                <td>Field goal %</td>
+                <td>49.7%</td>
+                <td>48.7%</td>
+            </tr>
+        </table>
+
+        <h2 id="legacy">Legacy and impact</h2>
+        <p>Michael Jordan's impact on basketball and popular culture is immeasurable. He transformed the NBA into a global phenomenon and became one of the most recognizable athletes in the world. His competitive intensity, clutch performances, and highlight-reel plays made him a cultural icon who transcended sports.<sup>[8]</sup></p>
+
+        <p>Jordan's influence extended beyond the court. He appeared in the 1996 film <i>Space Jam</i>, which became a cultural touchstone and introduced him to a younger generation. His "Be Like Mike" advertising campaign and various endorsements made him one of the most marketable athletes in history.</p>
+
+        <p>His jersey number 23 has been retired by the Chicago Bulls and Miami Heat (as an honor, though he never played for Miami). Many consider Jordan's championship runs in the 1990s as the pinnacle of basketball excellence, and his rivalries with players like Magic Johnson, Larry Bird, and later Kobe Bryant defined eras of the sport.</p>
+
+        <h2 id="business">Business ventures</h2>
+
+        <h3>Nike and Air Jordan brand</h3>
+        <p>Jordan's partnership with Nike resulted in the creation of the Air Jordan sneaker line in 1984. The brand revolutionized athletic footwear marketing and remains enormously popular today. The Air Jordan brand has generated billions of dollars in revenue and continues to release new models annually.<sup>[9]</sup></p>
+
+        <h3>Charlotte Hornets ownership</h3>
+        <p>In 2010, Jordan became the majority owner of the Charlotte Hornets (then the Charlotte Bobcats), making him the first former player to become majority owner of an NBA franchise. Under his ownership, the team has undergone significant changes and development.</p>
+
+        <h3>Other ventures</h3>
+        <p>Jordan has invested in various business ventures, including restaurants, car dealerships, and endorsement deals with companies such as Gatorade, Hanes, and McDonald's. His business acumen has made him one of the wealthiest former athletes in the world, with an estimated net worth exceeding $2 billion.<sup>[10]</sup></p>
+
+        <h2 id="see-also">See also</h2>
+        <div class="see-also">
+            <ul>
+                <li><a href="#">Chicago Bulls</a></li>
+                <li><a href="#">NBA Finals</a></li>
+                <li><a href="#">List of NBA champions</a></li>
+                <li><a href="#">Basketball Hall of Fame</a></li>
+                <li><a href="#">Air Jordan</a></li>
+                <li><a href="#">The Last Dance (miniseries)</a></li>
+                <li><a href="#">Scottie Pippen</a></li>
+                <li><a href="#">Phil Jackson</a></li>
+            </ul>
+        </div>
+
+        <h2 id="references">References</h2>
+        <div class="reference">
+            <span class="reference-number">[1]</span> Lazenby, Roland. <i>Michael Jordan: The Life</i>. Little, Brown and Company, 2014.
+        </div>
+        <div class="reference">
+            <span class="reference-number">[2]</span> NBA.com. "Michael Jordan Biography". National Basketball Association. Retrieved November 19, 2025.
+        </div>
+        <div class="reference">
+            <span class="reference-number">[3]</span> Smith, Sam. <i>The Jordan Rules</i>. Simon & Schuster, 1992.
+        </div>
+        <div class="reference">
+            <span class="reference-number">[4]</span> "1982 NCAA Championship Game". NCAA Basketball Archives. Retrieved November 19, 2025.
+        </div>
+        <div class="reference">
+            <span class="reference-number">[5]</span> Halberstam, David. <i>Playing for Keeps: Michael Jordan and the World He Made</i>. Random House, 1999.
+        </div>
+        <div class="reference">
+            <span class="reference-number">[6]</span> "Michael Jordan's Baseball Career". MLB.com. Retrieved November 19, 2025.
+        </div>
+        <div class="reference">
+            <span class="reference-number">[7]</span> "Michael Jordan Career Stats". Basketball-Reference.com. Retrieved November 19, 2025.
+        </div>
+        <div class="reference">
+            <span class="reference-number">[8]</span> Andrews, David L. <i>Michael Jordan, Inc.: Corporate Sport, Media Culture</i>. SUNY Press, 2001.
+        </div>
+        <div class="reference">
+            <span class="reference-number">[9]</span> "The Business of Being Michael Jordan". Forbes. Retrieved November 19, 2025.
+        </div>
+        <div class="reference">
+            <span class="reference-number">[10]</span> "Michael Jordan Net Worth". Celebrity Net Worth. Retrieved November 19, 2025.
+        </div>
+
+        <h2 id="external">External links</h2>
+        <ul class="external-links">
+            <li><a href="#">Michael Jordan at NBA.com</a></li>
+            <li><a href="#">Basketball Hall of Fame profile</a></li>
+            <li><a href="#">Air Jordan official website</a></li>
+            <li><a href="#">Charlotte Hornets official website</a></li>
+        </ul>
+
+        <div class="categories">
+            <b>Categories:</b> 1963 births | Living people | American basketball players | Chicago Bulls players | Washington Wizards players | Naismith Memorial Basketball Hall of Fame inductees | Olympic gold medalists for the United States | Basketball players from New York | North Carolina Tar Heels men's basketball players | NBA champions
+        </div>
+    </div>
+</body>
+</html>
