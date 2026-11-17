@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Godai (五大)</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      background: #f3f0e9;
+      color: #24231f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 3rem 1.25rem 5rem;
+    }
+
+    main {
+      width: min(100%, 52rem);
+      margin: 0 auto;
+    }
+
+    h1 {
+      display: flex;
+      justify-content: center;
+      gap: 0.2em;
+      margin: 0 0 0.5rem;
+      text-align: center;
+      font-size: clamp(2rem, 6vw, 3rem);
+    }
+
+    .title-unit {
+      display: grid;
+      justify-items: center;
+    }
+
+    .title-reading {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: #666258;
+      font-size: 0.4em;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    .title-kanji {
+      display: block;
+      font-size: 1.4em;
+      line-height: 1;
+    }
+
+    .intro {
+      margin: 0 0 2.5rem;
+      color: #666258;
+      text-align: center;
+    }
+
+    .players {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+    }
+
+    .player {
+      padding: 1.25rem;
+      border: 1px solid #ded9ce;
+      border-radius: 1rem;
+      background: #fffefa;
+      box-shadow: 0 0.5rem 1.5rem #3028170d;
+    }
+
+    .player.is-active {
+      border-color: #77704f;
+      box-shadow: 0 0 0 2px #77704f33, 0 0.5rem 1.5rem #3028170d;
+    }
+
+    h2 {
+      margin: 0 0 1rem;
+      font-size: 1.125rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(3, minmax(0, 1fr));
+      aspect-ratio: 1;
+      gap: 0;
+      overflow: hidden;
+      border: 1px solid #d5d0c4;
+    }
+
+    .cell {
+      min-width: 0;
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      border-right: 1px solid #d5d0c4;
+      border-bottom: 1px solid #d5d0c4;
+      border-radius: 0;
+      background: #f7f5ef;
+    }
+
+    .cell:nth-child(3n) {
+      border-right: 0;
+    }
+
+    .cell:nth-last-child(-n + 3) {
+      border-bottom: 0;
+    }
+
+    .cell:focus-visible {
+      outline: 3px solid #77704f;
+      outline-offset: 2px;
+    }
+
+    .cell.occupied {
+      display: grid;
+      place-items: center;
+      background: var(--tile-color);
+      color: #fff;
+      font-size: clamp(1.25rem, 4vw, 2rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .sora-player-1 {
+      --sora-color: #fffefa;
+      --sora-border: #a8a49a;
+      --sora-text: #24231f;
+    }
+
+    .sora-player-2 {
+      --sora-color: #24231f;
+      --sora-border: #595959;
+      --sora-text: #fffefa;
+    }
+
+    .tile-layer.sora-layer {
+      display: grid;
+      place-items: center;
+      background: var(--sora-color);
+      border-color: var(--sora-border);
+    }
+
+    .sora-layer .tile-kanji {
+      color: var(--sora-text);
+    }
+
+    .cell.occupied.sora {
+      background: var(--sora-color);
+      box-shadow: inset 0 0 0 1px var(--sora-border);
+      color: var(--sora-text);
+    }
+
+    .grid.is-active .cell:not(.occupied) {
+      cursor: copy;
+    }
+
+    .grid.is-active .cell.drag-over {
+      background: #e6e6e6;
+      box-shadow: inset 0 0 0 3px #aaa;
+    }
+
+    .supplies {
+      margin-top: 1.5rem;
+    }
+
+    h3 {
+      margin: 0 0 1rem;
+      font-size: 0.95rem;
+    }
+
+    .tile-stacks {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .tile-stock {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .tile-pile {
+      position: relative;
+      display: block;
+      width: 100%;
+      overflow: visible;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      font: inherit;
+      user-select: none;
+      cursor: grab;
+    }
+
+    .tile-stack {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .tile-layer {
+      position: absolute;
+      bottom: var(--layer-offset, 0px);
+      left: 0;
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid #ffffff70;
+      border-radius: 0.35rem;
+      background: var(--tile-color);
+    }
+
+    .tile-layer.top-tile {
+      display: grid;
+      place-items: center;
+      z-index: 20;
+    }
+
+    .tile-pile:active:not(:disabled) {
+      cursor: grabbing;
+    }
+
+    .tile-pile:focus-visible,
+    .tile-pile.is-selected {
+      outline: 3px solid #24231f;
+      outline-offset: 3px;
+    }
+
+    .tile-pile:disabled {
+      opacity: 1;
+      cursor: not-allowed;
+    }
+
+    .tile-kanji {
+      color: #fff;
+      font-size: clamp(1.25rem, 4vw, 2rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .tile-count {
+      position: absolute;
+      z-index: 1;
+      right: 0.25rem;
+      bottom: 0.25rem;
+      display: grid;
+      min-width: 1.55rem;
+      height: 1.55rem;
+      padding: 0 0.2rem;
+      place-items: center;
+      border-radius: 999px;
+      background: #fff;
+      color: #24231f;
+      font-size: 0.75rem;
+      font-weight: 700;
+      box-shadow: 0 1px 2px #0005;
+    }
+
+    .tile-name {
+      display: block;
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+    }
+
+    .game-controls {
+      display: grid;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .turn-status {
+      margin: 0;
+      color: #4f4b40;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .count-toggle {
+      position: fixed;
+      right: 1.25rem;
+      bottom: 1.25rem;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid #ded9ce;
+      border-radius: 999px;
+      background: #fffefa;
+      box-shadow: 0 0.25rem 1rem #3028171a;
+      color: #4f4b40;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .count-toggle input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+
+    .count-switch {
+      position: relative;
+      width: 2.4rem;
+      height: 1.35rem;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: #aaa69b;
+      transition: background-color 150ms ease;
+    }
+
+    .count-switch::after {
+      position: absolute;
+      top: 0.175rem;
+      left: 0.175rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background: #fffefa;
+      content: "";
+      transition: transform 150ms ease;
+    }
+
+    .count-toggle input:checked + .count-switch {
+      background: #77704f;
+    }
+
+    .count-toggle input:checked + .count-switch::after {
+      transform: translateX(1.05rem);
+    }
+
+    .count-toggle input:focus-visible + .count-switch {
+      outline: 3px solid #24231f;
+      outline-offset: 3px;
+    }
+
+    .testing-launcher {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      z-index: 20;
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: 0;
+      border: 1px solid #ded9ce;
+      border-radius: 50%;
+      background: #77704f;
+      color: #fffefa;
+      font: inherit;
+      font-size: 0.75rem;
+      opacity: 0;
+      cursor: pointer;
+      transition: opacity 150ms ease;
+    }
+
+    .testing-launcher:hover,
+    .testing-launcher:focus-visible {
+      opacity: 1;
+    }
+
+    .testing-launcher:focus-visible {
+      outline: 3px solid #24231f;
+      outline-offset: 3px;
+    }
+
+    .testing-panel {
+      position: fixed;
+      bottom: 4.75rem;
+      left: 1.25rem;
+      z-index: 20;
+      width: min(19rem, calc(100vw - 2.5rem));
+      padding: 1rem;
+      border: 1px solid #ded9ce;
+      border-radius: 0.75rem;
+      background: #fffefa;
+      box-shadow: 0 0.5rem 1.5rem #30281726;
+    }
+
+    .testing-panel[hidden] {
+      display: none;
+    }
+
+    .testing-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .testing-panel h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .testing-panel-close {
+      padding: 0.25rem 0.5rem;
+      border: 0;
+      background: transparent;
+      color: #4f4b40;
+      font: inherit;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    #undo-move {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.65rem;
+      border: 1px solid #ded9ce;
+      border-radius: 0.5rem;
+      background: #f7f5ef;
+      color: #24231f;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #undo-move:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .testing-panel .count-toggle {
+      position: static;
+      justify-content: space-between;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      font-size: 0.9rem;
+    }
+
+    .game-over-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      background: #24231fcc;
+    }
+
+    .game-over-screen[hidden] {
+      display: none;
+    }
+
+    .game-over-card {
+      width: min(100%, 26rem);
+      padding: 2rem;
+      border: 1px solid #ded9ce;
+      border-radius: 1rem;
+      background: #fffefa;
+      box-shadow: 0 0.5rem 1.5rem #0003;
+      text-align: center;
+    }
+
+    .game-over-card h2 {
+      margin: 0 0 0.75rem;
+    }
+
+    .game-over-card p {
+      margin: 0 0 1.5rem;
+      color: #666258;
+    }
+
+    .game-over-reset {
+      padding: 0.65rem 1rem;
+      border: 0;
+      border-radius: 0.5rem;
+      background: #77704f;
+      color: #fffefa;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .game-over-reset:focus-visible {
+      outline: 3px solid #24231f;
+      outline-offset: 3px;
+    }
+
+    .drag-preview {
+      position: fixed;
+      top: -1000px;
+      left: -1000px;
+      display: grid;
+      width: 3.75rem;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid var(--sora-border, #ffffff70);
+      border-radius: 0.35rem;
+      background: var(--tile-color, var(--sora-color));
+      color: var(--sora-text, #fff);
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .hide-counts .tile-count {
+      display: none;
+    }
+
+    .fire {
+      --tile-color: #a95f58;
+      --tile-shade: #804640;
+    }
+
+    .water {
+      --tile-color: #527f98;
+      --tile-shade: #3b5f73;
+    }
+
+    .earth {
+      --tile-color: #80654f;
+      --tile-shade: #5e4939;
+    }
+
+    .air {
+      --tile-color: #727981;
+      --tile-shade: #535960;
+    }
+
+    @media (max-width: 36rem) {
+      body {
+        padding-top: 2rem;
+      }
+
+      .players {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>
+      <span class="title-unit">
+        <span class="title-reading">Go</span>
+        <span class="title-kanji" lang="ja">五</span>
+      </span>
+      <span class="title-unit">
+        <span class="title-reading">Dai</span>
+        <span class="title-kanji" lang="ja">大</span>
+      </span>
+    </h1>
+    <p class="intro">Take turns placing two tiles on your own board. Drag a tile to a square, or select a tile and then a square.</p>
+    <div class="game-controls">
+      <p class="turn-status" id="turn-status" role="status" aria-live="polite" aria-atomic="true"></p>
+    </div>
+
+    <div class="players">
+      <section class="player" data-player="1" aria-labelledby="player-one-title">
+        <h2 id="player-one-title">Player 1</h2>
+        <div class="grid" data-player="1" role="group" aria-label="Player 1 grid">
+          <button class="cell" type="button" aria-label="Player 1, row 1, column 1"></button>
+          <button class="cell" type="button" aria-label="Player 1, row 1, column 2"></button>
+          <button class="cell" type="button" aria-label="Player 1, row 1, column 3"></button>
+          <button class="cell" type="button" aria-label="Player 1, row 2, column 1"></button>
+          <button class="cell" type="button" aria-label="Player 1, row 2, column 2"></button>
+          <button class="cell" type="button" aria-label="Player 1, row 2, column 3"></button>
+          <button class="cell" type="button" aria-label="Player 1, row 3, column 1"></button>
+          <button class="cell" type="button" aria-label="Player 1, row 3, column 2"></button>
+          <button class="cell" type="button" aria-label="Player 1, row 3, column 3"></button>
+        </div>
+        <div class="supplies">
+          <h3>Elemental tiles</h3>
+          <div class="tile-stacks" role="group" aria-label="Player 1 elemental tiles">
+            <div class="tile-stock">
+              <button class="tile-pile fire" type="button" data-player="1" data-element="fire" data-count="12" data-sora-available="true" aria-label="12 Fire tiles" draggable="true">
+                <span class="tile-stack" aria-hidden="true"></span>
+              </button>
+              <span class="tile-name">Fire</span>
+            </div>
+            <div class="tile-stock">
+              <button class="tile-pile water" type="button" data-player="1" data-element="water" data-count="12" data-sora-available="true" aria-label="12 Water tiles" draggable="true">
+                <span class="tile-stack" aria-hidden="true"></span>
+              </button>
+              <span class="tile-name">Water</span>
+            </div>
+            <div class="tile-stock">
+              <button class="tile-pile earth" type="button" data-player="1" data-element="earth" data-count="12" data-sora-available="true" aria-label="12 Earth tiles" draggable="true">
+                <span class="tile-stack" aria-hidden="true"></span>
+              </button>
+              <span class="tile-name">Earth</span>
+            </div>
+            <div class="tile-stock">
+              <button class="tile-pile air" type="button" data-player="1" data-element="air" data-count="12" data-sora-available="true" aria-label="12 Air tiles" draggable="true">
+                <span class="tile-stack" aria-hidden="true"></span>
+              </button>
+              <span class="tile-name">Air</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="player" data-player="2" aria-labelledby="player-two-title">
+        <h2 id="player-two-title">Player 2</h2>
+        <div class="grid" data-player="2" role="group" aria-label="Player 2 grid">
+          <button class="cell" type="button" aria-label="Player 2, row 1, column 1"></button>
+          <button class="cell" type="button" aria-label="Player 2, row 1, column 2"></button>
+          <button class="cell" type="button" aria-label="Player 2, row 1, column 3"></button>
+          <button class="cell" type="button" aria-label="Player 2, row 2, column 1"></button>
+          <button class="cell" type="button" aria-label="Player 2, row 2, column 2"></button>
+          <button class="cell" type="button" aria-label="Player 2, row 2, column 3"></button>
+          <button class="cell" type="button" aria-label="Player 2, row 3, column 1"></button>
+          <button class="cell" type="button" aria-label="Player 2, row 3, column 2"></button>
+          <button class="cell" type="button" aria-label="Player 2, row 3, column 3"></button>
+        </div>
+        <div class="supplies">
+          <h3>Elemental tiles</h3>
+          <div class="tile-stacks" role="group" aria-label="Player 2 elemental tiles">
+            <div class="tile-stock">
+              <button class="tile-pile fire" type="button" data-player="2" data-element="fire" data-count="12" data-sora-available="true" aria-label="12 Fire tiles" draggable="true">
+                <span class="tile-stack" aria-hidden="true"></span>
+              </button>
+              <span class="tile-name">Fire</span>
+            </div>
+            <div class="tile-stock">
+              <button class="tile-pile water" type="button" data-player="2" data-element="water" data-count="12" data-sora-available="true" aria-label="12 Water tiles" draggable="true">
+                <span class="tile-stack" aria-hidden="true"></span>
+              </button>
+              <span class="tile-name">Water</span>
+            </div>
+            <div class="tile-stock">
+              <button class="tile-pile earth" type="button" data-player="2" data-element="earth" data-count="12" data-sora-available="true" aria-label="12 Earth tiles" draggable="true">
+                <span class="tile-stack" aria-hidden="true"></span>
+              </button>
+              <span class="tile-name">Earth</span>
+            </div>
+            <div class="tile-stock">
+              <button class="tile-pile air" type="button" data-player="2" data-element="air" data-count="12" data-sora-available="true" aria-label="12 Air tiles" draggable="true">
+                <span class="tile-stack" aria-hidden="true"></span>
+              </button>
+              <span class="tile-name">Air</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div
+    class="game-over-screen"
+    id="game-over-screen"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="game-over-title"
+    aria-describedby="game-over-message"
+    hidden
+  >
+    <section class="game-over-card">
+      <h2 id="game-over-title">Game over</h2>
+      <p id="game-over-message">A player cannot place two tiles on their board. Reset to play again.</p>
+      <button class="game-over-reset" id="reset-game" type="button">Reset game</button>
+    </section>
+  </div>
+  <label class="count-toggle">
+    <span>Tile counts</span>
+    <input id="toggle-counts" type="checkbox" checked>
+    <span class="count-switch" aria-hidden="true"></span>
+  </label>
+  <aside class="testing-panel" id="testing-panel" aria-labelledby="testing-panel-title" hidden>
+    <div class="testing-panel-header">
+      <h2 id="testing-panel-title">Testing panel</h2>
+      <button class="testing-panel-close" id="close-testing-panel" type="button" aria-label="Close testing panel">×</button>
+    </div>
+    <button id="undo-move" type="button" disabled>Undo last move</button>
+    <label class="count-toggle">
+      <span>3 tiles per element</span>
+      <input id="reduced-counts-toggle" type="checkbox">
+      <span class="count-switch" aria-hidden="true"></span>
+    </label>
+  </aside>
+  <button
+    class="testing-launcher"
+    id="open-testing-panel"
+    type="button"
+    aria-label="Open testing panel"
+    aria-controls="testing-panel"
+    aria-expanded="false"
+    title="Open testing panel"
+  >Test</button>
+  <script>
+    const elements = {
+      fire: { name: "Fire", kanji: "火" },
+      water: { name: "Water", kanji: "水" },
+      earth: { name: "Earth", kanji: "地" },
+      air: { name: "Air", kanji: "風" },
+      sora: { name: "Sora", kanji: "空" }
+    };
+
+    const status = document.getElementById("turn-status");
+    const countToggle = document.getElementById("toggle-counts");
+    const reducedCountsToggle = document.getElementById("reduced-counts-toggle");
+    const gameOverScreen = document.getElementById("game-over-screen");
+    const gameOverTitle = document.getElementById("game-over-title");
+    const gameOverMessage = document.getElementById("game-over-message");
+    const resetGameButton = document.getElementById("reset-game");
+    const testingPanel = document.getElementById("testing-panel");
+    const testingLauncher = document.getElementById("open-testing-panel");
+    const undoButton = document.getElementById("undo-move");
+    const closeTestingPanel = document.getElementById("close-testing-panel");
+    const tilePiles = [...document.querySelectorAll(".tile-pile")];
+    const players = [...document.querySelectorAll(".player")];
+    const moveHistory = [];
+    let reducedTileCounts = false;
+    let activePlayer = "1";
+    let placementsThisTurn = 0;
+    let selectedTile = null;
+    let gameOver = false;
+    let dragPreview = null;
+    let highlightedCell = null;
+
+    function renderPile(pile) {
+      const count = Number(pile.dataset.count);
+      const stack = pile.querySelector(".tile-stack");
+      const tileSize = pile.getBoundingClientRect().width;
+      const soraAvailable = pile.dataset.soraAvailable === "true";
+      stack.replaceChildren();
+
+      if (soraAvailable) {
+        const soraLayer = document.createElement("span");
+        soraLayer.className = `tile-layer sora-layer sora-player-${pile.dataset.player}`;
+
+        const kanji = document.createElement("span");
+        kanji.className = "tile-kanji";
+        kanji.lang = "ja";
+        kanji.setAttribute("aria-hidden", "true");
+        kanji.textContent = elements.sora.kanji;
+        soraLayer.appendChild(kanji);
+        stack.appendChild(soraLayer);
+      }
+
+      for (let index = 0; index < count; index += 1) {
+        const layer = document.createElement("span");
+        layer.className = "tile-layer";
+        layer.style.setProperty("--layer-offset", `${index * 2}px`);
+
+        if (index === count - 1) {
+          layer.classList.add("top-tile");
+
+          const kanji = document.createElement("span");
+          kanji.className = "tile-kanji";
+          kanji.lang = "ja";
+          kanji.setAttribute("aria-hidden", "true");
+          kanji.textContent = elements[pile.dataset.element].kanji;
+
+          const badge = document.createElement("span");
+          badge.className = "tile-count";
+          badge.setAttribute("aria-hidden", "true");
+          badge.textContent = String(count);
+
+          layer.append(kanji, badge);
+        }
+
+        stack.appendChild(layer);
+      }
+
+      pile.style.height = count > 0
+        ? `${tileSize + (count - 1) * 2}px`
+        : soraAvailable ? `${tileSize}px` : "0px";
+    }
+
+    function sizeTilePiles() {
+      tilePiles.forEach(renderPile);
+    }
+
+    function getBoard(player) {
+      return document.querySelector(`.grid[data-player="${player}"]`);
+    }
+
+    function hasEmptyCell(player) {
+      return getBoard(player).querySelector(".cell:not(.occupied)") !== null;
+    }
+
+    function getAvailableTileCount(player) {
+      return tilePiles
+        .filter(pile => pile.dataset.player === player)
+        .reduce((total, pile) => {
+          const count = Number(pile.dataset.count);
+          const soraAvailable = count === 0 && pile.dataset.soraAvailable === "true";
+          return total + count + Number(soraAvailable);
+        }, 0);
+    }
+
+    function updatePileCounts() {
+      const tileLimit = reducedTileCounts ? 3 : 12;
+
+      tilePiles.forEach(pile => {
+        const placedTiles = [...getBoard(pile.dataset.player).querySelectorAll(".cell.occupied")];
+        const placed = placedTiles
+          .filter(cell => cell.dataset.element === pile.dataset.element).length;
+        const soraUsed = placedTiles.some(cell =>
+          cell.dataset.element === "sora" && cell.dataset.stockElement === pile.dataset.element
+        );
+
+        pile.dataset.count = String(Math.max(0, tileLimit - placed));
+        pile.dataset.soraAvailable = String(!soraUsed);
+        renderPile(pile);
+      });
+    }
+
+    function updateView(message) {
+      players.forEach(player => {
+        const isActive = player.dataset.player === activePlayer && !gameOver;
+        const grid = player.querySelector(".grid");
+
+        player.classList.toggle("is-active", isActive);
+        grid.classList.toggle("is-active", isActive);
+
+        player.querySelectorAll(".tile-pile").forEach(pile => {
+          const count = Number(pile.dataset.count);
+          const element = elements[pile.dataset.element];
+          const soraAvailable = pile.dataset.soraAvailable === "true";
+
+          pile.disabled = !isActive || (count === 0 && !soraAvailable);
+          pile.setAttribute(
+            "aria-label",
+            `${count} ${element.name} tiles${soraAvailable ? " and one Sora tile" : ""}`
+          );
+          pile.setAttribute("aria-pressed", String(selectedTile?.pile === pile));
+          pile.classList.toggle("is-selected", selectedTile?.pile === pile);
+        });
+      });
+
+      undoButton.disabled = moveHistory.length === 0;
+
+      if (gameOver) {
+        status.textContent = `${gameOverTitle.textContent} ${gameOverMessage.textContent}`;
+      } else {
+        status.textContent = message
+          || `Player ${activePlayer}'s turn — place two tiles (${placementsThisTurn} of 2 placed).`;
+      }
+    }
+
+    function startTurn() {
+      const emptyCells = getBoard(activePlayer).querySelectorAll(".cell:not(.occupied)").length;
+      const availableTiles = getAvailableTileCount(activePlayer);
+      const reasons = [];
+
+      if (emptyCells < 2) {
+        reasons.push("fewer than two empty spaces");
+      }
+      if (availableTiles < 2) {
+        reasons.push("fewer than two playable tiles");
+      }
+
+      if (reasons.length > 0) {
+        const winner = activePlayer === "1" ? "2" : "1";
+        gameOver = true;
+        selectedTile = null;
+        gameOverTitle.textContent = `Player ${winner} wins!`;
+        gameOverMessage.textContent =
+          `Player ${activePlayer} cannot place two tiles this turn because there are ${reasons.join(" and ")}.`;
+        gameOverScreen.hidden = false;
+        resetGameButton.focus();
+      }
+
+      updateView();
+    }
+
+    function finishTurn() {
+      placementsThisTurn = 0;
+      activePlayer = activePlayer === "1" ? "2" : "1";
+      startTurn();
+    }
+
+    function placeTile(player, type, cell, stockElement = type) {
+      if (
+        gameOver
+        || player !== activePlayer
+        || !elements[type]
+        || !elements[stockElement]
+        || (type !== "sora" && type !== stockElement)
+      ) {
+        return;
+      }
+
+      const board = cell.closest(".grid");
+      if (!board || board.dataset.player !== player || cell.classList.contains("occupied")) {
+        return;
+      }
+
+      const pile = document.querySelector(
+        `.tile-pile[data-player="${player}"][data-element="${stockElement}"]`
+      );
+      const count = Number(pile?.dataset.count);
+      const soraAvailable = pile?.dataset.soraAvailable === "true";
+      if (
+        !pile
+        || (type === "sora" && (count !== 0 || !soraAvailable))
+        || (type !== "sora" && count <= 0)
+      ) {
+        return;
+      }
+
+      const cellIndex = [...board.querySelectorAll(".cell")].indexOf(cell);
+      moveHistory.push({
+        player,
+        type,
+        stockElement,
+        cell,
+        previousActivePlayer: activePlayer,
+        previousPlacementsThisTurn: placementsThisTurn,
+        previousLabel: cell.getAttribute("aria-label")
+      });
+      cell.dataset.element = type;
+      cell.dataset.stockElement = stockElement;
+      cell.classList.add("occupied", type);
+      if (type === "sora") {
+        cell.classList.add(`sora-player-${player}`);
+        pile.dataset.soraAvailable = "false";
+      } else {
+        pile.dataset.count = String(count - 1);
+      }
+      cell.textContent = elements[type].kanji;
+      cell.setAttribute(
+        "aria-label",
+        `Player ${player}, row ${Math.floor(cellIndex / 3) + 1}, column ${cellIndex % 3 + 1}, ${elements[type].name} tile`
+      );
+
+      renderPile(pile);
+      selectedTile = null;
+      placementsThisTurn += 1;
+
+      if (placementsThisTurn === 2 || !hasEmptyCell(player)) {
+        finishTurn();
+      } else {
+        updateView();
+      }
+    }
+
+    function undoLastMove() {
+      const move = moveHistory.pop();
+      if (!move) {
+        return;
+      }
+
+      const pile = document.querySelector(
+        `.tile-pile[data-player="${move.player}"][data-element="${move.stockElement}"]`
+      );
+      move.cell.classList.remove("occupied", move.type);
+      if (move.type === "sora") {
+        move.cell.classList.remove(`sora-player-${move.player}`);
+        pile.dataset.soraAvailable = "true";
+      } else {
+        pile.dataset.count = String(Number(pile.dataset.count) + 1);
+      }
+      move.cell.textContent = "";
+      delete move.cell.dataset.element;
+      delete move.cell.dataset.stockElement;
+      move.cell.setAttribute("aria-label", move.previousLabel);
+      renderPile(pile);
+      activePlayer = move.previousActivePlayer;
+      placementsThisTurn = move.previousPlacementsThisTurn;
+      selectedTile = null;
+      gameOver = false;
+      clearDragHighlight();
+
+      updateView(
+        `Last tile placement undone. Player ${activePlayer}'s turn (${placementsThisTurn} of 2 placed).`
+      );
+    }
+
+    function setCountVisibility(visible) {
+      countToggle.checked = visible;
+      document.body.classList.toggle("hide-counts", !visible);
+    }
+
+    function setReducedTileCounts(reduced) {
+      reducedTileCounts = reduced;
+      updatePileCounts();
+      updateView();
+    }
+
+    function setTestingPanelOpen(open) {
+      testingPanel.hidden = !open;
+      testingLauncher.setAttribute("aria-expanded", String(open));
+      if (open) {
+        closeTestingPanel.focus();
+      }
+    }
+
+    function resetGame() {
+      players.forEach(player => {
+        const playerId = player.dataset.player;
+        getBoard(playerId).querySelectorAll(".cell").forEach((cell, index) => {
+          cell.className = "cell";
+          cell.textContent = "";
+          delete cell.dataset.element;
+          delete cell.dataset.stockElement;
+          cell.setAttribute(
+            "aria-label",
+            `Player ${playerId}, row ${Math.floor(index / 3) + 1}, column ${index % 3 + 1}`
+          );
+        });
+      });
+
+      moveHistory.length = 0;
+      activePlayer = "1";
+      placementsThisTurn = 0;
+      selectedTile = null;
+      gameOver = false;
+      reducedTileCounts = false;
+      reducedCountsToggle.checked = false;
+      gameOverScreen.hidden = true;
+      gameOverTitle.textContent = "Game over";
+      gameOverMessage.textContent =
+        "A player cannot place two tiles on their board. Reset to play again.";
+      setTestingPanelOpen(false);
+      updatePileCounts();
+      startTurn();
+      getBoard("1").querySelector(".cell").focus();
+    }
+
+    function closestElement(target, selector) {
+      return target instanceof Element ? target.closest(selector) : null;
+    }
+
+    undoButton.addEventListener("click", undoLastMove);
+    resetGameButton.addEventListener("click", resetGame);
+    countToggle.addEventListener("change", () => {
+      setCountVisibility(countToggle.checked);
+    });
+    reducedCountsToggle.addEventListener("change", () => {
+      setReducedTileCounts(reducedCountsToggle.checked);
+    });
+    testingLauncher.addEventListener("click", () => {
+      setTestingPanelOpen(true);
+    });
+    closeTestingPanel.addEventListener("click", () => {
+      setTestingPanelOpen(false);
+      testingLauncher.focus();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !testingPanel.hidden) {
+        setTestingPanelOpen(false);
+        testingLauncher.focus();
+      }
+    });
+
+    function clearDragHighlight() {
+      highlightedCell?.classList.remove("drag-over");
+      highlightedCell = null;
+    }
+
+    document.addEventListener("click", event => {
+      const pile = closestElement(event.target, ".tile-pile");
+      if (pile) {
+        if (pile.disabled || gameOver) {
+          return;
+        }
+
+        selectedTile = {
+          player: pile.dataset.player,
+          type: Number(pile.dataset.count) > 0 ? pile.dataset.element : "sora",
+          stockElement: pile.dataset.element,
+          pile
+        };
+        updateView(
+          `${elements[selectedTile.type].name} selected. Choose an empty square on your board (${placementsThisTurn} of 2 placed).`
+        );
+        return;
+      }
+
+      const cell = closestElement(event.target, ".cell");
+      if (cell && selectedTile) {
+        placeTile(selectedTile.player, selectedTile.type, cell, selectedTile.stockElement);
+      }
+    });
+
+    document.addEventListener("dragstart", event => {
+      const pile = closestElement(event.target, ".tile-pile");
+      if (!pile || pile.disabled || gameOver) {
+        event.preventDefault();
+        return;
+      }
+
+      selectedTile = null;
+      const type = Number(pile.dataset.count) > 0 ? pile.dataset.element : "sora";
+      event.dataTransfer.setData(
+        "text/plain",
+        `${pile.dataset.player}:${pile.dataset.element}:${type}`
+      );
+      event.dataTransfer.effectAllowed = "move";
+      dragPreview = document.createElement("div");
+      dragPreview.className = `drag-preview ${
+        type === "sora" ? `sora-player-${pile.dataset.player}` : pile.dataset.element
+      }`;
+      dragPreview.lang = "ja";
+      dragPreview.setAttribute("aria-hidden", "true");
+      dragPreview.textContent = elements[type].kanji;
+      document.body.appendChild(dragPreview);
+      const previewSize = dragPreview.getBoundingClientRect().width;
+      event.dataTransfer.setDragImage(dragPreview, previewSize / 2, previewSize / 2);
+      updateView();
+    });
+
+    document.addEventListener("dragend", () => {
+      dragPreview?.remove();
+      dragPreview = null;
+      clearDragHighlight();
+    });
+
+    document.querySelectorAll(".grid").forEach(grid => {
+      grid.addEventListener("dragover", event => {
+        const cell = closestElement(event.target, ".cell");
+        if (!cell || gameOver || grid.dataset.player !== activePlayer || cell.classList.contains("occupied")) {
+          clearDragHighlight();
+          return;
+        }
+
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+        if (highlightedCell && highlightedCell !== cell) {
+          highlightedCell.classList.remove("drag-over");
+        }
+        highlightedCell = cell;
+        cell.classList.add("drag-over");
+      });
+
+      grid.addEventListener("dragleave", event => {
+        const cell = closestElement(event.target, ".cell");
+        if (!cell || !(event.relatedTarget instanceof Node) || !cell.contains(event.relatedTarget)) {
+          clearDragHighlight();
+        }
+      });
+
+      grid.addEventListener("drop", event => {
+        const cell = closestElement(event.target, ".cell");
+        if (!cell) {
+          return;
+        }
+
+        event.preventDefault();
+        clearDragHighlight();
+        const [player, stockElement, type] = event.dataTransfer.getData("text/plain").split(":");
+        placeTile(player, type, cell, stockElement);
+      });
+    });
+
+    setCountVisibility(countToggle.checked);
+    sizeTilePiles();
+    window.addEventListener("resize", sizeTilePiles);
+    startTurn();
+  </script>
+</body>
+</html>
