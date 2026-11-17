@@ -23,7 +23,7 @@
     }
 
     main {
-      width: min(100%, 52rem);
+      width: min(100%, 78rem);
       margin: 0 auto;
     }
 
@@ -56,16 +56,172 @@
       line-height: 1;
     }
 
-    .intro {
-      margin: 0 0 2.5rem;
-      color: #666258;
-      text-align: center;
-    }
-
     .players {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2rem;
+      gap: 1.5rem;
+      width: min(100%, 64rem);
+      margin: 0 auto;
+    }
+
+    .game-layout {
+      display: block;
+    }
+
+    .utility-toolbar {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 20;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .utility-button {
+      display: grid;
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: 0;
+      place-items: center;
+      border: 1px solid #ded9ce;
+      border-radius: 50%;
+      background: #fffefa;
+      box-shadow: 0 0.25rem 1rem #3028171a;
+      color: #4f4b40;
+      font: inherit;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .utility-button:focus-visible,
+    .help-panel-close:focus-visible {
+      outline: 3px solid #77704f;
+      outline-offset: 3px;
+    }
+
+    .help-panel {
+      position: fixed;
+      top: 4.5rem;
+      right: 1rem;
+      z-index: 25;
+      display: flex;
+      width: min(22rem, calc(100vw - 2rem));
+      max-height: calc(100vh - 5.5rem);
+      flex-direction: column;
+      gap: 0.75rem;
+      overflow-y: auto;
+      padding: 1rem;
+      border: 1px solid #ded9ce;
+      border-radius: 1rem;
+      background: #fffefa;
+      box-shadow: 0 0.5rem 1.5rem #3028170d;
+    }
+
+    .help-panel[hidden],
+    .chat-log[hidden] {
+      display: none;
+    }
+
+    .help-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .help-panel h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .help-rules {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .help-rules section {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .help-rules h3 {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .help-rules ul {
+      display: grid;
+      gap: 0.4rem;
+      margin: 0;
+      padding-left: 1.2rem;
+      color: #4f4b40;
+      line-height: 1.5;
+    }
+
+    .help-panel-close {
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #f0eee8;
+      color: #4f4b40;
+      font: inherit;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .chat-log {
+      position: fixed;
+      top: 4.5rem;
+      right: 1rem;
+      z-index: 25;
+      display: flex;
+      width: 15rem;
+      max-width: calc(100vw - 2rem);
+      height: min(30rem, calc(100vh - 5.5rem));
+      max-height: calc(100vh - 5.5rem);
+      min-height: 12rem;
+      flex-direction: column;
+      gap: 0.9rem;
+      overflow: hidden;
+      padding: 1rem;
+      border: 1px solid #ded9ce;
+      border-radius: 1rem;
+      background: #fffefa;
+      box-shadow: 0 0.5rem 1.5rem #3028170d;
+    }
+
+    .chat-log h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .chat-log-messages {
+      display: grid;
+      flex: 1;
+      min-height: 0;
+      align-content: start;
+      gap: 0.75rem;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+    }
+
+    .chat-message {
+      margin: 0;
+      padding: 0.8rem;
+      border-radius: 0.75rem;
+      background: #f7f5ef;
+      color: #4f4b40;
+    }
+
+    .chat-message.player-1-message {
+      background: #f1e4e2;
+    }
+
+    .chat-message.player-2-message {
+      background: #e2ebef;
     }
 
     .player {
@@ -76,9 +232,90 @@
       box-shadow: 0 0.5rem 1.5rem #3028170d;
     }
 
+    .player-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .player-header h2 {
+      margin: 0;
+    }
+
+    .sora-bonus-indicator {
+      padding: 0.25rem 0.45rem;
+      border-radius: 999px;
+      background: #f0eee8;
+      color: #666258;
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .turn-status {
+      margin-left: auto;
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      background: #f0eee8;
+      color: #666258;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .player.is-active .turn-status {
+      background: #77704f;
+      color: #fffefa;
+    }
+
+    .player.is-attack-target .turn-status {
+      background: #527f98;
+      color: #fffefa;
+    }
+
+    .end-turn-button {
+      padding: 0.45rem 0.65rem;
+      border: 1px solid #77704f;
+      border-radius: 0.5rem;
+      background: #77704f;
+      color: #fffefa;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .end-turn-button.is-hidden {
+      visibility: hidden;
+    }
+
+    .end-turn-button:focus-visible {
+      outline: 3px solid #24231f;
+      outline-offset: 3px;
+    }
+
     .player.is-active {
       border-color: #77704f;
       box-shadow: 0 0 0 2px #77704f33, 0 0.5rem 1.5rem #3028170d;
+    }
+
+    .player.is-attack-target {
+      border-color: #527f98;
+      box-shadow: 0 0 0 2px #527f9833, 0 0.5rem 1.5rem #3028170d;
+    }
+
+    .player.is-water-move-board {
+      border-color: #527f98;
+      box-shadow: 0 0 0 2px #527f9833, 0 0.5rem 1.5rem #3028170d;
+    }
+
+    .player.is-earth-reveal-board {
+      border-color: #80654f;
+      box-shadow: 0 0 0 2px #80654f33, 0 0.5rem 1.5rem #3028170d;
     }
 
     h2 {
@@ -121,13 +358,116 @@
     }
 
     .cell.occupied {
+      position: relative;
       display: grid;
       place-items: center;
-      background: var(--tile-color);
       color: #fff;
       font-size: clamp(1.25rem, 4vw, 2rem);
       font-weight: 700;
       line-height: 1;
+      background: #f7f5ef;
+    }
+
+    .placed-tile {
+      position: absolute;
+      inset: 15%;
+      display: grid;
+      place-items: center;
+      border-radius: 0.2rem;
+      background: var(--tile-color, var(--sora-color));
+      box-shadow: 0 1px 3px #0002;
+      color: var(--sora-text, #fff);
+    }
+
+    .cell.attacked {
+      position: relative;
+      display: grid;
+      place-items: center;
+      background: #f7f5ef;
+    }
+
+    .attack-owner-1 {
+      --attack-color: #fffefa;
+      --attack-count-background: #24231f;
+      --attack-count-text: #fffefa;
+    }
+
+    .attack-owner-2 {
+      --attack-color: #24231f;
+      --attack-count-background: #fffefa;
+      --attack-count-text: #24231f;
+    }
+
+    .attack-stack {
+      position: absolute;
+      inset: 15%;
+      overflow: hidden;
+      border-radius: 0.1rem;
+      filter: drop-shadow(0 1px 3px #0002);
+    }
+
+    .attack-layer {
+      position: absolute;
+      inset: 0;
+      border: 0;
+      border-radius: 0.2rem;
+      background: var(--attack-color);
+    }
+
+    .attack-stack-count {
+      position: absolute;
+      right: 0.2rem;
+      bottom: 0.2rem;
+      z-index: 25;
+      display: grid;
+      min-width: 1.2rem;
+      height: 1.2rem;
+      padding: 0 0.2rem;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--attack-count-background);
+      box-shadow: 0 1px 3px #0005;
+      color: var(--attack-count-text);
+      font-size: 0.75rem;
+      font-weight: 800;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .cell.water-move-available {
+      cursor: grab;
+      background-color: color-mix(in srgb, #527f98 12%, #f7f5ef);
+    }
+
+    .cell.water-move-source {
+      background-color: color-mix(in srgb, #527f98 12%, #f7f5ef);
+    }
+
+    .cell.water-move-destination {
+      background-color: color-mix(in srgb, #527f98 12%, #f7f5ef);
+      cursor: pointer;
+    }
+
+    .cell.earth-reveal-available {
+      background-color: color-mix(in srgb, #80654f 12%, #f7f5ef);
+      cursor: pointer;
+    }
+
+    .revealed-attack-tile {
+      position: absolute;
+      inset: 15%;
+      display: grid;
+      place-items: center;
+      z-index: 20;
+      border-radius: 0.2rem;
+      background: var(--tile-color, var(--sora-color));
+      box-shadow: 0 1px 3px #0002;
+      color: var(--sora-text, #fff);
+      pointer-events: none;
+    }
+
+    .cell.break-highlight {
+      background-color: color-mix(in srgb, var(--break-highlight-color, var(--tile-color)) 12%, #f7f5ef);
     }
 
     .sora-player-1 {
@@ -153,19 +493,34 @@
       color: var(--sora-text);
     }
 
-    .cell.occupied.sora {
-      background: var(--sora-color);
-      box-shadow: inset 0 0 0 1px var(--sora-border);
-      color: var(--sora-text);
-    }
-
-    .grid.is-active .cell:not(.occupied) {
+    .grid.is-active .cell:not(.occupied):not(.attacked),
+    .grid.is-attack-target .cell:not(.occupied) {
       cursor: copy;
     }
 
-    .grid.is-active .cell.drag-over {
+    .grid.is-active .cell.drag-over,
+    .grid.is-attack-target .cell.drag-over {
       background: #e6e6e6;
-      box-shadow: inset 0 0 0 3px #aaa;
+    }
+
+    .grid.is-active .cell.forbidden-placement,
+    .grid.is-active .cell.drag-over.forbidden-placement {
+      position: relative;
+      background: #f3c1c1;
+      color: #a52222;
+      cursor: not-allowed;
+    }
+
+    .grid.is-active .cell.forbidden-placement::after {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      content: "×";
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      line-height: 1;
+      pointer-events: none;
     }
 
     .supplies {
@@ -228,6 +583,15 @@
       z-index: 20;
     }
 
+    .tile-layer.depleted-tile {
+      border-color: #bdbab1;
+      background: #e2e0da;
+    }
+
+    .depleted-tile .tile-kanji {
+      color: #8e8b82;
+    }
+
     .tile-pile:active:not(:disabled) {
       cursor: grabbing;
     }
@@ -236,6 +600,12 @@
     .tile-pile.is-selected {
       outline: 3px solid #24231f;
       outline-offset: 3px;
+    }
+
+    .tile-pile.is-effect-choice {
+      outline: 3px solid var(--tile-color);
+      outline-offset: 3px;
+      cursor: pointer;
     }
 
     .tile-pile:disabled {
@@ -280,18 +650,17 @@
       margin-bottom: 2rem;
     }
 
-    .turn-status {
-      margin: 0;
-      color: #4f4b40;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .count-toggle {
+    .display-toggles {
       position: fixed;
       right: 1.25rem;
       bottom: 1.25rem;
       z-index: 10;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .count-toggle {
+      position: static;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -520,24 +889,24 @@
       display: none;
     }
 
+    .hide-sora-bonus .sora-bonus-indicator {
+      display: none;
+    }
+
     .fire {
       --tile-color: #a95f58;
-      --tile-shade: #804640;
     }
 
     .water {
       --tile-color: #527f98;
-      --tile-shade: #3b5f73;
     }
 
     .earth {
       --tile-color: #80654f;
-      --tile-shade: #5e4939;
     }
 
     .air {
       --tile-color: #727981;
-      --tile-shade: #535960;
     }
 
     @media (max-width: 36rem) {
@@ -548,6 +917,17 @@
       .players {
         grid-template-columns: 1fr;
         gap: 1rem;
+      }
+
+      .display-toggles {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+
+    @media (max-width: 42rem) {
+      .chat-log {
+        width: min(22rem, calc(100vw - 2rem));
       }
     }
   </style>
@@ -564,14 +944,15 @@
         <span class="title-kanji" lang="ja">大</span>
       </span>
     </h1>
-    <p class="intro">Take turns placing two tiles on your own board. Drag a tile to a square, or select a tile and then a square.</p>
-    <div class="game-controls">
-      <p class="turn-status" id="turn-status" role="status" aria-live="polite" aria-atomic="true"></p>
-    </div>
-
-    <div class="players">
+    <div class="game-layout">
+      <div class="players">
       <section class="player" data-player="1" aria-labelledby="player-one-title">
-        <h2 id="player-one-title">Player 1</h2>
+        <div class="player-header">
+          <h2 id="player-one-title">Player 1</h2>
+          <span class="sora-bonus-indicator" data-player="1" aria-label="Sora bonus: 0 actions">Sora +0</span>
+          <span class="turn-status" data-player="1" role="status" aria-live="polite">Waiting</span>
+          <button class="end-turn-button is-hidden" type="button" data-player="1" disabled>End Turn</button>
+        </div>
         <div class="grid" data-player="1" role="group" aria-label="Player 1 grid">
           <button class="cell" type="button" aria-label="Player 1, row 1, column 1"></button>
           <button class="cell" type="button" aria-label="Player 1, row 1, column 2"></button>
@@ -615,7 +996,12 @@
       </section>
 
       <section class="player" data-player="2" aria-labelledby="player-two-title">
-        <h2 id="player-two-title">Player 2</h2>
+        <div class="player-header">
+          <h2 id="player-two-title">Player 2</h2>
+          <span class="sora-bonus-indicator" data-player="2" aria-label="Sora bonus: 0 actions">Sora +0</span>
+          <span class="turn-status" data-player="2" role="status" aria-live="polite">Waiting</span>
+          <button class="end-turn-button is-hidden" type="button" data-player="2" disabled>End Turn</button>
+        </div>
         <div class="grid" data-player="2" role="group" aria-label="Player 2 grid">
           <button class="cell" type="button" aria-label="Player 2, row 1, column 1"></button>
           <button class="cell" type="button" aria-label="Player 2, row 1, column 2"></button>
@@ -657,6 +1043,12 @@
           </div>
         </div>
       </section>
+      </div>
+      <aside class="chat-log" id="game-log-panel" aria-labelledby="game-log-title">
+        <h2 id="game-log-title">Game log</h2>
+        <div class="chat-log-messages" id="game-log-messages" role="log" aria-live="polite" aria-relevant="additions">
+        </div>
+      </aside>
     </div>
   </main>
   <div
@@ -674,11 +1066,78 @@
       <button class="game-over-reset" id="reset-game" type="button">Reset game</button>
     </section>
   </div>
-  <label class="count-toggle">
-    <span>Tile counts</span>
-    <input id="toggle-counts" type="checkbox" checked>
-    <span class="count-switch" aria-hidden="true"></span>
-  </label>
+  <div class="utility-toolbar" role="group" aria-label="Game panels">
+    <button
+      class="utility-button"
+      id="help-toggle"
+      type="button"
+      aria-label="Show game rules"
+      aria-expanded="false"
+      aria-controls="help-panel"
+      title="Game rules"
+    >ⓘ</button>
+    <button
+      class="utility-button"
+      id="game-log-toggle"
+      type="button"
+      aria-label="Minimize game log"
+      aria-expanded="true"
+      aria-controls="game-log-panel"
+      title="Minimize game log"
+    >▤</button>
+  </div>
+  <aside class="help-panel" id="help-panel" aria-labelledby="help-panel-title" hidden>
+    <div class="help-panel-header">
+      <h2 id="help-panel-title">How to play</h2>
+      <button class="help-panel-close" id="close-help-panel" type="button" aria-label="Close game rules">×</button>
+    </div>
+    <div class="help-rules">
+      <section>
+        <h3>Your turn</h3>
+        <ul>
+          <li>Place two tiles on your board.</li>
+          <li>Then break one connected formation of at least two matching elements, or end your turn. If you have no legal formation, your turn ends automatically.</li>
+          <li>You lose if you cannot place two tiles because you do not have enough tiles or empty spaces.</li>
+          <li>A placement cannot create a connected group larger than five tiles.</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Formations and actions</h3>
+        <ul>
+          <li>Tiles connect orthogonally (up, down, left, or right). Sora (空) can join a formation as a wildcard, but it does not connect different element types to each other.</li>
+          <li>Effect actions = formation size minus one, plus your Sora (空) bonus shown beside your name. Sora (空) tiles in the formation count toward its size.</li>
+          <li>Each Sora (空) tile on your board gives your opponent one extra action whenever they break a formation. Sora (空) stays on the board after a formation breaks and cannot be used for attacks.</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Element effects</h3>
+        <ul>
+          <li><strong>Fire (火):</strong> Place upside-down tiles from your opponent's piles on their board, up to your action count. You cannot place them on face-up tiles, but you can stack them on upside-down tiles.</li>
+          <li><strong>Water (水):</strong> Move one tile one orthogonal space per action. Face-up tiles can move only to empty spaces. You can move an upside-down tile from a stack onto another upside-down tile or off the stack.</li>
+          <li><strong>Earth (地):</strong> Flip up to one adjacent upside-down tile per action. Only the top tile of a stack can be flipped; you may end the effect early.</li>
+          <li><strong>Air (風):</strong> Choose Fire (火), Water (水), or Earth (地) and use it for your action count. Empty piles can still be chosen, but their tiles cannot be placed.</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Attack tiles</h3>
+        <ul>
+          <li>Upside-down tiles show the board owner's color. They can be stacked on other upside-down tiles, but not on face-up tiles.</li>
+        </ul>
+      </section>
+    </div>
+  </aside>
+  <div class="display-toggles">
+    <label class="count-toggle">
+      <span>Tile counts</span>
+      <input id="toggle-counts" type="checkbox" checked>
+      <span class="count-switch" aria-hidden="true"></span>
+    </label>
+    <label class="count-toggle">
+      <span>Sora bonus</span>
+      <input id="toggle-sora-bonus" type="checkbox" checked>
+      <span class="count-switch" aria-hidden="true"></span>
+    </label>
+  </div>
   <aside class="testing-panel" id="testing-panel" aria-labelledby="testing-panel-title" hidden>
     <div class="testing-panel-header">
       <h2 id="testing-panel-title">Testing panel</h2>
@@ -709,8 +1168,14 @@
       sora: { name: "Sora", kanji: "空" }
     };
 
-    const status = document.getElementById("turn-status");
+    const gameLogMessages = document.getElementById("game-log-messages");
+    const gameLogPanel = document.getElementById("game-log-panel");
+    const gameLogToggle = document.getElementById("game-log-toggle");
+    const helpPanel = document.getElementById("help-panel");
+    const helpToggle = document.getElementById("help-toggle");
+    const closeHelpPanel = document.getElementById("close-help-panel");
     const countToggle = document.getElementById("toggle-counts");
+    const soraBonusToggle = document.getElementById("toggle-sora-bonus");
     const reducedCountsToggle = document.getElementById("reduced-counts-toggle");
     const gameOverScreen = document.getElementById("game-over-screen");
     const gameOverTitle = document.getElementById("game-over-title");
@@ -722,11 +1187,22 @@
     const closeTestingPanel = document.getElementById("close-testing-panel");
     const tilePiles = [...document.querySelectorAll(".tile-pile")];
     const players = [...document.querySelectorAll(".player")];
+    const endTurnButtons = [...document.querySelectorAll(".end-turn-button")];
     const moveHistory = [];
+    const removedTileCounts = new Map();
+    const attackStacks = new Map();
     let reducedTileCounts = false;
     let activePlayer = "1";
     let placementsThisTurn = 0;
     let selectedTile = null;
+    let draggedTile = null;
+    let breakingPhase = false;
+    let attackState = null;
+    let waterMoveState = null;
+    let earthRevealState = null;
+    let airChoiceState = null;
+    let selectedWaterMoveSource = null;
+    let highlightedFormation = [];
     let gameOver = false;
     let dragPreview = null;
     let highlightedCell = null;
@@ -776,9 +1252,22 @@
         stack.appendChild(layer);
       }
 
+      if (count === 0 && !soraAvailable) {
+        const depletedLayer = document.createElement("span");
+        depletedLayer.className = "tile-layer top-tile depleted-tile";
+
+        const kanji = document.createElement("span");
+        kanji.className = "tile-kanji";
+        kanji.lang = "ja";
+        kanji.setAttribute("aria-hidden", "true");
+        kanji.textContent = elements[pile.dataset.element].kanji;
+        depletedLayer.appendChild(kanji);
+        stack.appendChild(depletedLayer);
+      }
+
       pile.style.height = count > 0
         ? `${tileSize + (count - 1) * 2}px`
-        : soraAvailable ? `${tileSize}px` : "0px";
+        : `${tileSize}px`;
     }
 
     function sizeTilePiles() {
@@ -790,7 +1279,334 @@
     }
 
     function hasEmptyCell(player) {
-      return getBoard(player).querySelector(".cell:not(.occupied)") !== null;
+      return getBoard(player).querySelector(".cell:not(.occupied):not(.attacked)") !== null;
+    }
+
+    function getAttackableCells(player) {
+      return [...getBoard(player).querySelectorAll(".cell")]
+        .filter(cell => !cell.classList.contains("occupied"));
+    }
+
+    function getWaterMoveTile(cell) {
+      if (cell.classList.contains("occupied")) {
+        return {
+          kind: "face-up",
+          type: cell.dataset.element,
+          stockElement: cell.dataset.stockElement
+        };
+      }
+
+      const stack = attackStacks.get(cell);
+      if (stack?.length) {
+        return { kind: "upside-down", tile: stack[stack.length - 1] };
+      }
+
+      return null;
+    }
+
+    function isLegalWaterMove(source, destination) {
+      const sourceBoard = source.closest(".grid");
+      if (
+        !waterMoveState
+        || !sourceBoard
+        || sourceBoard !== destination.closest(".grid")
+        || !getOrthogonalNeighbors(sourceBoard, source).includes(destination)
+        || destination.classList.contains("occupied")
+      ) {
+        return false;
+      }
+
+      const tile = getWaterMoveTile(source);
+      if (!tile) {
+        return false;
+      }
+
+      if (tile.kind === "face-up") {
+        return !destination.classList.contains("attacked")
+          && !isForbiddenPlacement(sourceBoard, destination, tile.type, source);
+      }
+
+      return !destination.classList.contains("attacked") || attackStacks.has(destination);
+    }
+
+    function hasLegalWaterMoveFrom(source) {
+      const board = source.closest(".grid");
+      return Boolean(
+        board
+        && getWaterMoveTile(source)
+        && getOrthogonalNeighbors(board, source)
+          .some(destination => isLegalWaterMove(source, destination))
+      );
+    }
+
+    function hasLegalWaterMove() {
+      return [getBoard("1"), getBoard("2")].some(board =>
+        [...board.querySelectorAll(".cell")].some(hasLegalWaterMoveFrom)
+      );
+    }
+
+    function clearFaceUpTile(cell) {
+      cell.className = "cell";
+      delete cell.dataset.element;
+      delete cell.dataset.stockElement;
+      cell.removeAttribute("aria-description");
+      renderAttackStack(cell);
+    }
+
+    function placeFaceUpTile(cell, tile) {
+      cell.className = `cell occupied ${tile.type}`;
+      const board = cell.closest(".grid");
+      if (tile.type === "sora") {
+        cell.classList.add(`sora-player-${board.dataset.player}`);
+      }
+      cell.dataset.element = tile.type;
+      cell.dataset.stockElement = tile.stockElement;
+      renderAttackStack(cell);
+    }
+
+    function isAttackTargetCell(cell, targetPlayer) {
+      const board = cell.closest(".grid");
+      return Boolean(
+        board
+        && board.dataset.player === targetPlayer
+        && !cell.classList.contains("occupied")
+        && (!cell.classList.contains("attacked") || attackStacks.has(cell))
+      );
+    }
+
+    function renderAttackStack(cell) {
+      const stack = attackStacks.get(cell);
+      const faceUpType = cell.classList.contains("occupied") ? cell.dataset.element : null;
+      cell.classList.toggle("attacked", Boolean(stack?.length));
+      cell.classList.toggle("attack-owner-1", stack?.[0]?.boardOwner === "1");
+      cell.classList.toggle("attack-owner-2", stack?.[0]?.boardOwner === "2");
+      cell.replaceChildren();
+
+      if (stack?.length) {
+        const stackElement = document.createElement("span");
+        stackElement.className = "attack-stack";
+        stackElement.setAttribute("aria-hidden", "true");
+        stack.forEach((tile, index) => {
+          const layer = document.createElement("span");
+          layer.className = "attack-layer";
+          layer.style.setProperty("--attack-offset", `${(stack.length - index - 1) * 2}px`);
+          layer.style.transform = `translateY(var(--attack-offset))`;
+          layer.style.zIndex = String(index + 1);
+          stackElement.appendChild(layer);
+        });
+        cell.appendChild(stackElement);
+      }
+
+      const board = cell.closest(".grid");
+      const cellIndex = [...board.querySelectorAll(".cell")].indexOf(cell);
+      const location = `Player ${board.dataset.player}, row ${Math.floor(cellIndex / 3) + 1}, column ${cellIndex % 3 + 1}`;
+
+      if (faceUpType) {
+        if (stack?.length) {
+          const revealedTile = document.createElement("span");
+          revealedTile.className = "revealed-attack-tile";
+          revealedTile.setAttribute("aria-hidden", "true");
+          revealedTile.textContent = elements[faceUpType].kanji;
+          cell.appendChild(revealedTile);
+        } else {
+          const placedTile = document.createElement("span");
+          placedTile.className = "placed-tile";
+          placedTile.textContent = elements[faceUpType].kanji;
+          cell.appendChild(placedTile);
+        }
+      }
+
+      if (stack?.length) {
+        const totalCount = stack.length + Number(Boolean(faceUpType));
+        if (stack.length > 1 || faceUpType) {
+          const count = document.createElement("span");
+          count.className = "attack-stack-count";
+          count.setAttribute("aria-hidden", "true");
+          count.textContent = String(totalCount);
+          cell.appendChild(count);
+        }
+        cell.dataset.attackCount = String(totalCount);
+        const hiddenTiles = `${stack.length} upside-down tile${stack.length === 1 ? "" : "s"}`;
+        cell.setAttribute(
+          "aria-label",
+          faceUpType
+            ? `${location}, ${elements[faceUpType].name} tile over ${hiddenTiles}`
+            : `${location}, ${hiddenTiles}`
+        );
+      } else {
+        delete cell.dataset.attackCount;
+        cell.setAttribute(
+          "aria-label",
+          faceUpType ? `${location}, ${elements[faceUpType].name} tile` : location
+        );
+      }
+    }
+
+    function getOrthogonalNeighbors(board, cell) {
+      const cells = [...board.querySelectorAll(".cell")];
+      const index = cells.indexOf(cell);
+      const row = Math.floor(index / 3);
+      const column = index % 3;
+
+      return [
+        [row - 1, column],
+        [row + 1, column],
+        [row, column - 1],
+        [row, column + 1]
+      ]
+        .filter(([neighborRow, neighborColumn]) =>
+          neighborRow >= 0 && neighborRow < 3 && neighborColumn >= 0 && neighborColumn < 3
+        )
+        .map(([neighborRow, neighborColumn]) => cells[neighborRow * 3 + neighborColumn]);
+    }
+
+    function getConnectedElementCells(board, startCell, element, ignoredCell = null) {
+      if (element === "sora") {
+        return new Set([startCell]);
+      }
+
+      const connected = new Set([startCell]);
+      const pending = [startCell];
+
+      while (pending.length > 0) {
+        const cell = pending.pop();
+        getOrthogonalNeighbors(board, cell).forEach(neighbor => {
+          if (
+            neighbor !== ignoredCell
+            && (neighbor.dataset.element === element || neighbor.dataset.element === "sora")
+            && !connected.has(neighbor)
+          ) {
+            connected.add(neighbor);
+            pending.push(neighbor);
+          }
+        });
+      }
+
+      return connected;
+    }
+
+    function getElementFormation(board, cell) {
+      const element = cell.dataset.element;
+      if (!element) {
+        return [];
+      }
+
+      if (element === "sora") {
+        const connectedSora = new Set([cell]);
+        const pending = [cell];
+        const adjacentElements = new Set();
+
+        while (pending.length > 0) {
+          const soraCell = pending.pop();
+          getOrthogonalNeighbors(board, soraCell).forEach(neighbor => {
+            if (neighbor.dataset.element === "sora" && !connectedSora.has(neighbor)) {
+              connectedSora.add(neighbor);
+              pending.push(neighbor);
+            } else if (neighbor.dataset.element && neighbor.dataset.element !== "sora") {
+              adjacentElements.add(neighbor.dataset.element);
+            }
+          });
+        }
+
+        for (const candidateElement of adjacentElements) {
+          const formation = [...getConnectedElementCells(board, cell, candidateElement)];
+          if (formation.length >= 2) {
+            return formation;
+          }
+        }
+        return [];
+      }
+
+      return [...getConnectedElementCells(board, cell, element)];
+    }
+
+    function getConnectedElementCount(board, startCell, element, ignoredCell = null) {
+      return getConnectedElementCells(board, startCell, element, ignoredCell).size;
+    }
+
+    function isForbiddenPlacement(board, cell, element, ignoredCell = null) {
+      return element !== "sora" && getConnectedElementCount(board, cell, element, ignoredCell) > 5;
+    }
+
+    function clearBreakHighlight() {
+      highlightedFormation.forEach(cell => {
+        cell.classList.remove("break-highlight");
+        cell.style.removeProperty("--break-highlight-color");
+      });
+      highlightedFormation = [];
+    }
+
+    function highlightBreakFormation(cell) {
+      clearBreakHighlight();
+      const board = cell.closest(".grid");
+      if (
+        !breakingPhase
+        || attackState
+        || airChoiceState
+        || waterMoveState
+        || earthRevealState
+        || !board
+        || board.dataset.player !== activePlayer
+      ) {
+        return;
+      }
+
+      highlightedFormation = getElementFormation(board, cell);
+      if (highlightedFormation.length < 2) {
+        highlightedFormation = [];
+        return;
+      }
+
+      const elementCell = highlightedFormation.find(formationCell =>
+        formationCell.dataset.element !== "sora"
+      );
+      if (!elementCell) {
+        highlightedFormation = [];
+        return;
+      }
+      const highlightColor = getComputedStyle(elementCell).getPropertyValue("--tile-color").trim();
+      highlightedFormation.forEach(formationCell => {
+        formationCell.classList.add("break-highlight");
+        formationCell.style.setProperty("--break-highlight-color", highlightColor);
+      });
+    }
+
+    function updateForbiddenCells() {
+      const placement = draggedTile || selectedTile;
+
+      players.forEach(player => {
+        const grid = player.querySelector(".grid");
+        const canMark = placement
+          && placement.player === player.dataset.player
+          && !placement.attack
+          && !gameOver;
+
+        grid.querySelectorAll(".cell").forEach(cell => {
+          const forbidden = Boolean(
+            canMark
+            && !cell.classList.contains("occupied")
+            && !cell.classList.contains("attacked")
+            && isForbiddenPlacement(grid, cell, placement.type)
+          );
+          cell.classList.toggle("forbidden-placement", forbidden);
+          if (forbidden) {
+            cell.setAttribute(
+              "aria-description",
+              "Cannot place this tile here because it would create a connected group larger than five."
+            );
+          } else {
+            cell.removeAttribute("aria-description");
+          }
+        });
+      });
+    }
+
+    function appendGameLogMessage(message, player = null) {
+      const entry = document.createElement("p");
+      entry.className = `chat-message game-log-entry${player ? ` player-${player}-message` : ""}`;
+      entry.textContent = message;
+      gameLogMessages.appendChild(entry);
+      gameLogMessages.scrollTop = gameLogMessages.scrollHeight;
     }
 
     function getAvailableTileCount(player) {
@@ -803,6 +1619,11 @@
         }, 0);
     }
 
+    function getSoraEffectBonus(player) {
+      const opponent = player === "1" ? "2" : "1";
+      return getBoard(opponent).querySelectorAll(".cell.occupied.sora").length;
+    }
+
     function updatePileCounts() {
       const tileLimit = reducedTileCounts ? 3 : 12;
 
@@ -810,51 +1631,174 @@
         const placedTiles = [...getBoard(pile.dataset.player).querySelectorAll(".cell.occupied")];
         const placed = placedTiles
           .filter(cell => cell.dataset.element === pile.dataset.element).length;
+        const attacked = [...attackStacks].reduce((total, [cell, stack]) => {
+          if (cell.closest(".grid").dataset.player !== pile.dataset.player) {
+            return total;
+          }
+          return total + stack.filter(tile => tile.stockElement === pile.dataset.element).length;
+        }, 0);
         const soraUsed = placedTiles.some(cell =>
           cell.dataset.element === "sora" && cell.dataset.stockElement === pile.dataset.element
         );
+        const removed = removedTileCounts.get(`${pile.dataset.player}:${pile.dataset.element}`) || 0;
 
-        pile.dataset.count = String(Math.max(0, tileLimit - placed));
+        pile.dataset.count = String(Math.max(0, tileLimit - placed - attacked - removed));
         pile.dataset.soraAvailable = String(!soraUsed);
         renderPile(pile);
       });
     }
 
-    function updateView(message) {
+    function constrainAttackToAvailableTiles() {
+      if (!attackState) {
+        return;
+      }
+
+      const availableTiles = tilePiles
+        .filter(pile => pile.dataset.player === attackState.targetPlayer)
+        .reduce((total, pile) => total + Number(pile.dataset.count), 0);
+      if (availableTiles >= attackState.remaining) {
+        return;
+      }
+
+      attackState.remaining = availableTiles;
+      selectedTile = null;
+      if (availableTiles === 0) {
+        const attacker = attackState.attacker;
+        attackState = null;
+        appendGameLogMessage(
+          `Player ${attacker}'s fire attack ended because no opponent elemental tiles remain.`,
+          attacker
+        );
+      } else {
+        appendGameLogMessage(
+          `The fire attack is reduced to ${availableTiles} remaining upside-down tile${availableTiles === 1 ? "" : "s"}.`
+        );
+      }
+    }
+
+    function updateView(message, messagePlayer = null) {
       players.forEach(player => {
+        const soraBonus = getSoraEffectBonus(player.dataset.player);
+        const soraBonusIndicator = player.querySelector(".sora-bonus-indicator");
+        soraBonusIndicator.textContent = `Sora +${soraBonus}`;
+        soraBonusIndicator.setAttribute(
+          "aria-label",
+          `Sora bonus: ${soraBonus} additional action${soraBonus === 1 ? "" : "s"} per formation break`
+        );
+        soraBonusIndicator.title =
+          `${soraBonus} additional action${soraBonus === 1 ? "" : "s"} per formation break`;
+
         const isActive = player.dataset.player === activePlayer && !gameOver;
+        const isAttackTarget = attackState
+          && player.dataset.player === attackState.targetPlayer
+          && !gameOver;
+        const isAirEffectChoice = airChoiceState
+          && airChoiceState.player === player.dataset.player;
+        const isWaterMoveBoard = Boolean(waterMoveState);
+        const isEarthRevealBoard = Boolean(
+          earthRevealState && earthRevealState.player === player.dataset.player
+        );
         const grid = player.querySelector(".grid");
 
         player.classList.toggle("is-active", isActive);
-        grid.classList.toggle("is-active", isActive);
+        player.classList.toggle("is-attack-target", Boolean(isAttackTarget));
+        player.classList.toggle("is-water-move-board", isWaterMoveBoard);
+        player.classList.toggle("is-earth-reveal-board", isEarthRevealBoard);
+        grid.classList.toggle("is-active", isActive && !breakingPhase && !attackState);
+        grid.classList.toggle("is-attack-target", Boolean(isAttackTarget));
+        grid.classList.toggle("is-water-move-board", isWaterMoveBoard);
+        grid.classList.toggle("is-earth-reveal-board", isEarthRevealBoard);
+        grid.querySelectorAll(".cell").forEach(cell => {
+          cell.classList.toggle(
+            "water-move-available",
+            Boolean(waterMoveState && !selectedWaterMoveSource && hasLegalWaterMoveFrom(cell))
+          );
+          cell.classList.toggle("water-move-source", selectedWaterMoveSource === cell);
+          cell.classList.toggle(
+            "water-move-destination",
+            Boolean(waterMoveState && selectedWaterMoveSource && isLegalWaterMove(selectedWaterMoveSource, cell))
+          );
+          cell.classList.toggle(
+            "earth-reveal-available",
+            Boolean(earthRevealState && earthRevealState.targets.includes(cell))
+          );
+        });
+        const turnStatus = player.querySelector(".turn-status");
+        if (gameOver) {
+          turnStatus.textContent = "Game over";
+        } else if (attackState) {
+          const label = isAttackTarget ? "Under attack" : isActive ? "Attack phase" : "Waiting";
+          turnStatus.textContent = label === "Waiting"
+            ? label
+            : `${label} · ${attackState.remaining} left`;
+        } else if (airChoiceState) {
+          turnStatus.textContent = isAirEffectChoice
+            ? `Choose effect · ${airChoiceState.remaining} left`
+            : "Waiting";
+        } else if (waterMoveState) {
+          const label = isActive ? "Water move" : "Move tiles here";
+          turnStatus.textContent = `${label} · ${waterMoveState.remaining} left`;
+        } else if (earthRevealState) {
+          turnStatus.textContent = isActive
+            ? `Earth effect · ${earthRevealState.remaining} left`
+            : "Waiting";
+        } else if (isActive) {
+          turnStatus.textContent = breakingPhase ? "Breaking phase" : "Current turn";
+        } else {
+          turnStatus.textContent = "Waiting";
+        }
 
         player.querySelectorAll(".tile-pile").forEach(pile => {
           const count = Number(pile.dataset.count);
           const element = elements[pile.dataset.element];
           const soraAvailable = pile.dataset.soraAvailable === "true";
+          const isAttackSource = attackState
+            && pile.dataset.player === attackState.targetPlayer;
+          const isEffectChoice = Boolean(
+            isAirEffectChoice
+            && ["fire", "water", "earth"].includes(pile.dataset.element)
+          );
 
-          pile.disabled = !isActive || (count === 0 && !soraAvailable);
+          pile.disabled = airChoiceState
+            ? !isEffectChoice
+            : attackState
+              ? !isAttackSource || count === 0
+              : !isActive || breakingPhase || (count === 0 && !soraAvailable);
+          pile.draggable = !airChoiceState;
           pile.setAttribute(
             "aria-label",
-            `${count} ${element.name} tiles${soraAvailable ? " and one Sora tile" : ""}`
+            isEffectChoice
+              ? `Choose ${element.name} effect (${airChoiceState.remaining} action${airChoiceState.remaining === 1 ? "" : "s"})`
+              : `${count} ${element.name} tiles${!attackState && soraAvailable ? " and one Sora tile" : ""}`
           );
           pile.setAttribute("aria-pressed", String(selectedTile?.pile === pile));
           pile.classList.toggle("is-selected", selectedTile?.pile === pile);
+          pile.classList.toggle("is-effect-choice", isEffectChoice);
         });
       });
 
       undoButton.disabled = moveHistory.length === 0;
+      endTurnButtons.forEach(button => {
+        const hidden = button.dataset.player !== activePlayer
+          || !breakingPhase
+          || Boolean(attackState)
+          || Boolean(airChoiceState)
+          || Boolean(waterMoveState)
+          || gameOver;
+        button.classList.toggle("is-hidden", hidden);
+        button.disabled = hidden;
+        button.textContent = earthRevealState ? "End Earth Effect" : "End Turn";
+      });
+      updateForbiddenCells();
 
-      if (gameOver) {
-        status.textContent = `${gameOverTitle.textContent} ${gameOverMessage.textContent}`;
-      } else {
-        status.textContent = message
-          || `Player ${activePlayer}'s turn — place two tiles (${placementsThisTurn} of 2 placed).`;
+      if (message) {
+        appendGameLogMessage(message, messagePlayer);
       }
     }
 
     function startTurn() {
-      const emptyCells = getBoard(activePlayer).querySelectorAll(".cell:not(.occupied)").length;
+      const emptyCells = getBoard(activePlayer)
+        .querySelectorAll(".cell:not(.occupied):not(.attacked)").length;
       const availableTiles = getAvailableTileCount(activePlayer);
       const reasons = [];
 
@@ -874,20 +1818,510 @@
           `Player ${activePlayer} cannot place two tiles this turn because there are ${reasons.join(" and ")}.`;
         gameOverScreen.hidden = false;
         resetGameButton.focus();
+        appendGameLogMessage(`${gameOverTitle.textContent} ${gameOverMessage.textContent}`);
+      } else {
+        appendGameLogMessage(`Player ${activePlayer}'s turn begins. Place two tiles.`, activePlayer);
       }
 
       updateView();
     }
 
-    function finishTurn() {
+    function beginBreakingPhase() {
+      breakingPhase = true;
+      selectedTile = null;
+      airChoiceState = null;
+      waterMoveState = null;
+      earthRevealState = null;
+      selectedWaterMoveSource = null;
+      clearBreakHighlight();
+      appendGameLogMessage(
+        `Player ${activePlayer}'s breaking phase begins. Break formations or end your turn.`,
+        activePlayer
+      );
+      updateView();
+      endTurnIfNoLegalBreaks();
+    }
+
+    function beginEarthRevealPhase(tileCount, targets) {
+      if (targets.length === 0) {
+        appendGameLogMessage(
+          `Player ${activePlayer}'s Earth effect found no adjacent upside-down tiles to reveal.`,
+          activePlayer
+        );
+        return;
+      }
+
+      earthRevealState = {
+        player: activePlayer,
+        remaining: tileCount,
+        targets
+      };
+      appendGameLogMessage(
+        `Player ${activePlayer}'s Earth effect: flip up to ${tileCount} adjacent upside-down tile${tileCount === 1 ? "" : "s"}. Choose highlighted spaces; only the top tile of each stack can be revealed.`,
+        activePlayer
+      );
+    }
+
+    function beginAirEffectChoice(tileCount, earthTargets) {
+      airChoiceState = {
+        player: activePlayer,
+        remaining: tileCount,
+        earthTargets
+      };
+      appendGameLogMessage(
+        `Player ${activePlayer} must choose Fire, Water, or Earth for the Air effect (${tileCount} action${tileCount === 1 ? "" : "s"}). Click an elemental pile to choose; empty piles are valid choices, but their tiles cannot be placed.`,
+        activePlayer
+      );
+    }
+
+    function chooseAirEffect(element) {
+      if (
+        !airChoiceState
+        || airChoiceState.player !== activePlayer
+        || !["fire", "water", "earth"].includes(element)
+      ) {
+        return;
+      }
+
+      const { player, remaining, earthTargets } = airChoiceState;
+      airChoiceState = null;
+      appendGameLogMessage(
+        `Player ${player} chose the ${elements[element].name} effect for Air.`,
+        player
+      );
+      if (element === "fire") {
+        beginFireAttack(remaining);
+      } else if (element === "water") {
+        beginWaterMovePhase(remaining);
+      } else {
+        beginEarthRevealPhase(remaining, earthTargets);
+      }
+      updateView();
+      if (waterMoveState && !hasLegalWaterMove()) {
+        endWaterMovePhase();
+      }
+      endTurnIfNoLegalBreaks();
+    }
+
+    function endEarthRevealPhase(endedEarly = false) {
+      if (!earthRevealState) {
+        return;
+      }
+
+      const { player, remaining } = earthRevealState;
+      earthRevealState = null;
+      appendGameLogMessage(
+        remaining === 0
+          ? `Player ${player} completed the Earth effect.`
+          : endedEarly
+            ? `Player ${player} ended the Earth effect with ${remaining} flip${remaining === 1 ? "" : "s"} unused.`
+            : `Player ${player} revealed all available adjacent upside-down tiles; ${remaining} flip${remaining === 1 ? "" : "s"} unused.`,
+        player
+      );
+      updateView();
+      endTurnIfNoLegalBreaks();
+    }
+
+    function handleEarthRevealCell(cell) {
+      if (!earthRevealState || !earthRevealState.targets.includes(cell)) {
+        return;
+      }
+
+      const stack = attackStacks.get(cell);
+      const tile = stack?.[stack.length - 1];
+      if (!tile) {
+        return;
+      }
+
+      const previousTargets = [...earthRevealState.targets];
+      moveHistory.push({
+        kind: "earth-reveal",
+        player: earthRevealState.player,
+        cell,
+        tile,
+        previousRemaining: earthRevealState.remaining,
+        previousTargets
+      });
+      stack.pop();
+      if (stack.length === 0) {
+        attackStacks.delete(cell);
+      } else {
+        attackStacks.set(cell, stack);
+      }
+      cell.classList.add("occupied", tile.type);
+      if (tile.type === "sora") {
+        cell.classList.add(`sora-player-${cell.closest(".grid").dataset.player}`);
+      }
+      cell.dataset.element = tile.type;
+      cell.dataset.stockElement = tile.stockElement;
+      earthRevealState.targets = earthRevealState.targets.filter(target => target !== cell);
+      earthRevealState.remaining -= 1;
+      renderAttackStack(cell);
+
+      const board = cell.closest(".grid");
+      const cellIndex = [...board.querySelectorAll(".cell")].indexOf(cell);
+      appendGameLogMessage(
+        `Player ${earthRevealState.player} revealed a ${elements[tile.type].name} tile on Player ${board.dataset.player}'s board at row ${Math.floor(cellIndex / 3) + 1}, column ${cellIndex % 3 + 1}.`,
+        earthRevealState.player
+      );
+      updateView();
+
+      if (earthRevealState.remaining === 0 || earthRevealState.targets.length === 0) {
+        endEarthRevealPhase();
+      }
+    }
+
+    function beginFireAttack(tileCount) {
+      const targetPlayer = activePlayer === "1" ? "2" : "1";
+      const availableTiles = tilePiles
+        .filter(pile => pile.dataset.player === targetPlayer)
+        .reduce((total, pile) => total + Number(pile.dataset.count), 0);
+      const possibleTiles = getAttackableCells(targetPlayer).length > 0
+        ? Math.min(tileCount, availableTiles)
+        : 0;
+
+      if (possibleTiles === 0) {
+        appendGameLogMessage(
+          `Player ${activePlayer}'s fire attack has no legal tiles to place on Player ${targetPlayer}'s board.`,
+          activePlayer
+        );
+        return;
+      }
+
+      attackState = {
+        attacker: activePlayer,
+        targetPlayer,
+        remaining: possibleTiles
+      };
+      appendGameLogMessage(
+        `Player ${activePlayer}'s fire attack: place all ${possibleTiles} possible upside-down tile${possibleTiles === 1 ? "" : "s"} on Player ${targetPlayer}'s board.`,
+        activePlayer
+      );
+    }
+
+    function endBreakingPhase(automatic = false) {
+      if (!breakingPhase || attackState || airChoiceState || waterMoveState || earthRevealState || gameOver) {
+        return;
+      }
+
+      appendGameLogMessage(
+        automatic
+          ? `Player ${activePlayer} has no legal formations to break. Their turn ends automatically.`
+          : `Player ${activePlayer} ended their turn.`,
+        activePlayer
+      );
+      breakingPhase = false;
       placementsThisTurn = 0;
       activePlayer = activePlayer === "1" ? "2" : "1";
+      selectedTile = null;
+      selectedWaterMoveSource = null;
+      earthRevealState = null;
+      clearBreakHighlight();
       startTurn();
+    }
+
+    function hasBreakableFormation(player) {
+      const board = getBoard(player);
+      return [...board.querySelectorAll(".cell.occupied")]
+        .some(cell => getElementFormation(board, cell).length >= 2);
+    }
+
+    function endTurnIfNoLegalBreaks() {
+      if (
+        !breakingPhase
+        || attackState
+        || airChoiceState
+        || waterMoveState
+        || earthRevealState
+        || gameOver
+        || hasBreakableFormation(activePlayer)
+      ) {
+        return;
+      }
+
+      endBreakingPhase(true);
+    }
+
+    function beginWaterMovePhase(tileCount) {
+      waterMoveState = { player: activePlayer, remaining: tileCount };
+      selectedWaterMoveSource = null;
+      appendGameLogMessage(
+        `Player ${activePlayer}'s Water effect: move one tile one adjacent space per move; use all ${tileCount} possible move${tileCount === 1 ? "" : "s"}.`,
+        activePlayer
+      );
+    }
+
+    function endWaterMovePhase() {
+      if (!waterMoveState) {
+        return;
+      }
+
+      const { player, remaining } = waterMoveState;
+      waterMoveState = null;
+      selectedWaterMoveSource = null;
+      appendGameLogMessage(
+        remaining === 0
+          ? `Player ${player} completed the Water moves.`
+          : `Player ${player} has no legal tile moves; the Water effect ends with ${remaining} move${remaining === 1 ? "" : "s"} unused.`,
+        player
+      );
+      updateView();
+      endTurnIfNoLegalBreaks();
+    }
+
+    function moveWaterTile(source, destination) {
+      if (!waterMoveState || !isLegalWaterMove(source, destination)) {
+        return;
+      }
+
+      const tile = getWaterMoveTile(source);
+      const board = source.closest(".grid");
+      const player = board.dataset.player;
+      const cells = [...board.querySelectorAll(".cell")];
+      const sourceIndex = cells.indexOf(source);
+      const destinationIndex = cells.indexOf(destination);
+      const previousRemaining = waterMoveState.remaining;
+      let movedTile;
+      let destinationStackSize = 0;
+
+      if (tile.kind === "face-up") {
+        movedTile = { type: tile.type, stockElement: tile.stockElement };
+        moveHistory.push({
+          kind: "water-move",
+          player: waterMoveState.player,
+          tileKind: "face-up",
+          tile: movedTile,
+          source,
+          destination,
+          previousRemaining
+        });
+        clearFaceUpTile(source);
+        placeFaceUpTile(destination, movedTile);
+      } else {
+        movedTile = tile.tile;
+        const sourceStack = attackStacks.get(source);
+        const destinationStack = attackStacks.get(destination) || [];
+        destinationStackSize = destinationStack.length;
+        moveHistory.push({
+          kind: "water-move",
+          player: waterMoveState.player,
+          tileKind: "upside-down",
+          tile: movedTile,
+          source,
+          destination,
+          previousRemaining
+        });
+        sourceStack.pop();
+        if (sourceStack.length === 0) {
+          attackStacks.delete(source);
+        } else {
+          attackStacks.set(source, sourceStack);
+        }
+        attackStacks.set(destination, [...destinationStack, movedTile]);
+        renderAttackStack(source);
+        renderAttackStack(destination);
+      }
+
+      waterMoveState.remaining -= 1;
+      selectedWaterMoveSource = null;
+      const name = elements[movedTile.type].name;
+      const direction = tile.kind === "face-up" ? "" : "upside-down ";
+      appendGameLogMessage(
+        `Player ${waterMoveState.player} moved a ${direction}${name} tile on Player ${player}'s board from row ${Math.floor(sourceIndex / 3) + 1}, column ${sourceIndex % 3 + 1} to row ${Math.floor(destinationIndex / 3) + 1}, column ${destinationIndex % 3 + 1}${destinationStackSize ? ", stacking it on another upside-down tile" : ""}.`,
+        waterMoveState.player
+      );
+      updateView();
+
+      if (waterMoveState.remaining === 0 || !hasLegalWaterMove()) {
+        endWaterMovePhase();
+      }
+    }
+
+    function handleWaterMoveCell(cell) {
+      if (!waterMoveState) {
+        return;
+      }
+
+      if (selectedWaterMoveSource === cell) {
+        selectedWaterMoveSource = null;
+        updateView();
+        return;
+      }
+
+      if (selectedWaterMoveSource && isLegalWaterMove(selectedWaterMoveSource, cell)) {
+        moveWaterTile(selectedWaterMoveSource, cell);
+        return;
+      }
+
+      if (hasLegalWaterMoveFrom(cell)) {
+        selectedWaterMoveSource = cell;
+        const tile = getWaterMoveTile(cell);
+        const player = cell.closest(".grid").dataset.player;
+        const name = elements[tile.kind === "upside-down" ? tile.tile.type : tile.type].name;
+        appendGameLogMessage(
+          `Player ${waterMoveState.player} selected a ${tile.kind === "upside-down" ? "upside-down " : ""}${name} tile on Player ${player}'s board. Choose an adjacent square (${waterMoveState.remaining} move${waterMoveState.remaining === 1 ? "" : "s"} remaining).`,
+          waterMoveState.player
+        );
+        updateView();
+      }
+    }
+
+    function getAdjacentFaceDownCells(board, formation) {
+      const adjacentCells = new Set();
+      formation.forEach(formationCell => {
+        getOrthogonalNeighbors(board, formationCell).forEach(cell => {
+          if (!cell.classList.contains("occupied") && attackStacks.get(cell)?.length) {
+            adjacentCells.add(cell);
+          }
+        });
+      });
+      return [...adjacentCells];
+    }
+
+    function breakFormation(cell) {
+      if (!breakingPhase || attackState || airChoiceState || waterMoveState || earthRevealState || gameOver) {
+        return;
+      }
+
+      const board = cell.closest(".grid");
+      if (!board || board.dataset.player !== activePlayer) {
+        return;
+      }
+
+      const formation = getElementFormation(board, cell);
+      if (formation.length < 2) {
+        return;
+      }
+
+      const element = formation.find(formationCell =>
+        formationCell.dataset.element !== "sora"
+      ).dataset.element;
+      const earthTargets = element === "earth" || element === "air"
+        ? getAdjacentFaceDownCells(board, formation)
+        : [];
+      const tilesToBreak = formation.filter(formationCell =>
+        formationCell.dataset.element !== "sora"
+      );
+      clearBreakHighlight();
+      moveHistory.push({
+        kind: "break",
+        player: activePlayer,
+        previousPlacementsThisTurn: placementsThisTurn,
+        cells: tilesToBreak.map(formationCell => ({
+          cell: formationCell,
+          className: formationCell.className,
+          element: formationCell.dataset.element,
+          stockElement: formationCell.dataset.stockElement,
+          textContent: formationCell.textContent,
+          label: formationCell.getAttribute("aria-label")
+        }))
+      });
+
+      tilesToBreak.forEach(formationCell => {
+        const key = `${activePlayer}:${formationCell.dataset.stockElement}`;
+        removedTileCounts.set(key, (removedTileCounts.get(key) || 0) + 1);
+        formationCell.className = "cell";
+        delete formationCell.dataset.element;
+        delete formationCell.dataset.stockElement;
+        formationCell.removeAttribute("aria-description");
+        renderAttackStack(formationCell);
+      });
+
+      const soraCount = formation.length - tilesToBreak.length;
+      const soraEffectBonus = getSoraEffectBonus(activePlayer);
+      const effectCount = formation.length - 1 + soraEffectBonus;
+      appendGameLogMessage(
+        `Player ${activePlayer} broke ${["earth", "air"].includes(element) ? "an" : "a"} ${elements[element].name} formation of ${formation.length} tiles${soraCount ? `; ${soraCount} Sora tile${soraCount === 1 ? " remains" : "s remain"}` : ""}${soraEffectBonus ? `; +${soraEffectBonus} effect action${soraEffectBonus === 1 ? "" : "s"} from opposing Sora` : ""}.`,
+        activePlayer
+      );
+      if (element === "fire") {
+        beginFireAttack(effectCount);
+      } else if (element === "water") {
+        beginWaterMovePhase(effectCount);
+      } else if (element === "earth") {
+        beginEarthRevealPhase(effectCount, earthTargets);
+      } else if (element === "air") {
+        beginAirEffectChoice(effectCount, earthTargets);
+      }
+      updateView();
+      if (waterMoveState && !hasLegalWaterMove()) {
+        endWaterMovePhase();
+      }
+      endTurnIfNoLegalBreaks();
+    }
+
+    function placeAttackTile(tile, cell) {
+      if (
+        !attackState
+        || !tile?.attack
+        || tile.player !== attackState.attacker
+        || attackState.remaining <= 0
+        || gameOver
+        || !isAttackTargetCell(cell, attackState.targetPlayer)
+      ) {
+        return;
+      }
+
+      const stockElement = tile.stockElement;
+      const pile = document.querySelector(
+        `.tile-pile[data-player="${attackState.targetPlayer}"][data-element="${stockElement}"]`
+      );
+      if (!pile || Number(pile.dataset.count) <= 0 || !elements[stockElement]) {
+        return;
+      }
+
+      const board = cell.closest(".grid");
+      const cellIndex = [...board.querySelectorAll(".cell")].indexOf(cell);
+      const previousStack = attackStacks.get(cell) || [];
+      moveHistory.push({
+        kind: "attack",
+        attacker: attackState.attacker,
+        targetPlayer: attackState.targetPlayer,
+        stockElement,
+        cell,
+        previousRemaining: attackState.remaining
+      });
+      attackStacks.set(cell, [
+        ...previousStack,
+        {
+          type: stockElement,
+          stockElement,
+          attacker: attackState.attacker,
+          boardOwner: attackState.targetPlayer
+        }
+      ]);
+      renderAttackStack(cell);
+      attackState.remaining -= 1;
+      selectedTile = null;
+      updatePileCounts();
+
+      const location = `row ${Math.floor(cellIndex / 3) + 1}, column ${cellIndex % 3 + 1}`;
+      appendGameLogMessage(
+        `Player ${attackState.attacker} placed an upside-down ${elements[stockElement].name} tile on Player ${attackState.targetPlayer}'s board at ${location}${previousStack.length ? ", stacking it on an existing attack tile" : ""}.`,
+        attackState.attacker
+      );
+
+      if (attackState.remaining === 0) {
+        attackState = null;
+        appendGameLogMessage(
+          `Player ${activePlayer}'s fire attack is complete. Continue the breaking phase.`,
+          activePlayer
+        );
+      } else {
+        appendGameLogMessage(
+          `${attackState.remaining} upside-down attack tile${attackState.remaining === 1 ? "" : "s"} remaining.`,
+          attackState.attacker
+        );
+      }
+
+      updateView();
+      endTurnIfNoLegalBreaks();
     }
 
     function placeTile(player, type, cell, stockElement = type) {
       if (
         gameOver
+        || breakingPhase
         || player !== activePlayer
         || !elements[type]
         || !elements[stockElement]
@@ -897,7 +2331,12 @@
       }
 
       const board = cell.closest(".grid");
-      if (!board || board.dataset.player !== player || cell.classList.contains("occupied")) {
+      if (
+        !board
+        || board.dataset.player !== player
+        || cell.classList.contains("occupied")
+        || cell.classList.contains("attacked")
+      ) {
         return;
       }
 
@@ -910,18 +2349,21 @@
         !pile
         || (type === "sora" && (count !== 0 || !soraAvailable))
         || (type !== "sora" && count <= 0)
+        || isForbiddenPlacement(board, cell, type)
       ) {
         return;
       }
 
       const cellIndex = [...board.querySelectorAll(".cell")].indexOf(cell);
       moveHistory.push({
+        kind: "placement",
         player,
         type,
         stockElement,
         cell,
         previousActivePlayer: activePlayer,
         previousPlacementsThisTurn: placementsThisTurn,
+        previousBreakingPhase: breakingPhase,
         previousLabel: cell.getAttribute("aria-label")
       });
       cell.dataset.element = type;
@@ -933,10 +2375,17 @@
       } else {
         pile.dataset.count = String(count - 1);
       }
-      cell.textContent = elements[type].kanji;
+      renderAttackStack(cell);
       cell.setAttribute(
         "aria-label",
         `Player ${player}, row ${Math.floor(cellIndex / 3) + 1}, column ${cellIndex % 3 + 1}, ${elements[type].name} tile`
+      );
+      const soraEffectMessage = type === "sora"
+        ? ` Player ${player === "1" ? "2" : "1"} gains +1 action whenever they break an elemental formation.`
+        : "";
+      appendGameLogMessage(
+        `Player ${player} placed ${elements[type].name} at row ${Math.floor(cellIndex / 3) + 1}, column ${cellIndex % 3 + 1}.${soraEffectMessage}`,
+        player
       );
 
       renderPile(pile);
@@ -944,7 +2393,7 @@
       placementsThisTurn += 1;
 
       if (placementsThisTurn === 2 || !hasEmptyCell(player)) {
-        finishTurn();
+        beginBreakingPhase();
       } else {
         updateView();
       }
@@ -953,6 +2402,113 @@
     function undoLastMove() {
       const move = moveHistory.pop();
       if (!move) {
+        return;
+      }
+
+      gameOver = false;
+      gameOverScreen.hidden = true;
+      selectedTile = null;
+      selectedWaterMoveSource = null;
+      clearBreakHighlight();
+
+      if (move.kind === "break") {
+        move.cells.forEach(snapshot => {
+          const key = `${move.player}:${snapshot.stockElement}`;
+          const removed = removedTileCounts.get(key) || 0;
+          if (removed <= 1) {
+            removedTileCounts.delete(key);
+          } else {
+            removedTileCounts.set(key, removed - 1);
+          }
+          snapshot.cell.className = snapshot.className;
+          snapshot.cell.dataset.element = snapshot.element;
+          snapshot.cell.dataset.stockElement = snapshot.stockElement;
+          snapshot.cell.textContent = snapshot.textContent;
+          snapshot.cell.setAttribute("aria-label", snapshot.label);
+          renderAttackStack(snapshot.cell);
+        });
+        activePlayer = move.player;
+        placementsThisTurn = move.previousPlacementsThisTurn;
+        breakingPhase = true;
+        attackState = null;
+        airChoiceState = null;
+        waterMoveState = null;
+        earthRevealState = null;
+        appendGameLogMessage(
+          `Player ${move.player}'s broken formation was restored.`,
+          move.player
+        );
+        updateView();
+        return;
+      }
+
+      if (move.kind === "earth-reveal") {
+        clearFaceUpTile(move.cell);
+        const stack = attackStacks.get(move.cell) || [];
+        attackStacks.set(move.cell, [...stack, move.tile]);
+        renderAttackStack(move.cell);
+        activePlayer = move.player;
+        breakingPhase = true;
+        attackState = null;
+        waterMoveState = null;
+        earthRevealState = {
+          player: move.player,
+          remaining: move.previousRemaining,
+          targets: [...move.previousTargets]
+        };
+        appendGameLogMessage(`Player ${move.player}'s last Earth flip was undone.`, move.player);
+        updateView();
+        return;
+      }
+
+      if (move.kind === "water-move") {
+        if (move.tileKind === "face-up") {
+          clearFaceUpTile(move.destination);
+          placeFaceUpTile(move.source, move.tile);
+        } else {
+          const destinationStack = attackStacks.get(move.destination) || [];
+          destinationStack.pop();
+          if (destinationStack.length === 0) {
+            attackStacks.delete(move.destination);
+          } else {
+            attackStacks.set(move.destination, destinationStack);
+          }
+          const sourceStack = attackStacks.get(move.source) || [];
+          attackStacks.set(move.source, [...sourceStack, move.tile]);
+          renderAttackStack(move.destination);
+          renderAttackStack(move.source);
+        }
+        activePlayer = move.player;
+        breakingPhase = true;
+        attackState = null;
+        waterMoveState = { player: move.player, remaining: move.previousRemaining };
+        appendGameLogMessage(`Player ${move.player}'s last Water move was undone.`, move.player);
+        updateView();
+        return;
+      }
+
+      if (move.kind === "attack") {
+        const stack = attackStacks.get(move.cell) || [];
+        stack.pop();
+        if (stack.length === 0) {
+          attackStacks.delete(move.cell);
+        } else {
+          attackStacks.set(move.cell, stack);
+        }
+        renderAttackStack(move.cell);
+        attackState = {
+          attacker: move.attacker,
+          targetPlayer: move.targetPlayer,
+          remaining: move.previousRemaining
+        };
+        activePlayer = move.attacker;
+        updatePileCounts();
+        constrainAttackToAvailableTiles();
+        appendGameLogMessage(
+          `Player ${move.attacker}'s upside-down attack tile was removed by undo.`,
+          move.attacker
+        );
+        updateView();
         return;
       }
 
@@ -973,12 +2529,11 @@
       renderPile(pile);
       activePlayer = move.previousActivePlayer;
       placementsThisTurn = move.previousPlacementsThisTurn;
-      selectedTile = null;
-      gameOver = false;
-      clearDragHighlight();
+      breakingPhase = move.previousBreakingPhase;
 
       updateView(
-        `Last tile placement undone. Player ${activePlayer}'s turn (${placementsThisTurn} of 2 placed).`
+        `Last tile placement undone. Player ${activePlayer}'s turn (${placementsThisTurn} of 2 placed).`,
+        activePlayer
       );
     }
 
@@ -987,10 +2542,44 @@
       document.body.classList.toggle("hide-counts", !visible);
     }
 
+    function setSoraBonusVisibility(visible) {
+      soraBonusToggle.checked = visible;
+      document.body.classList.toggle("hide-sora-bonus", !visible);
+    }
+
+    function updatePanelControls() {
+      const logVisible = !gameLogPanel.hidden;
+      const helpVisible = !helpPanel.hidden;
+      gameLogToggle.setAttribute("aria-expanded", String(logVisible));
+      gameLogToggle.setAttribute("aria-label", `${logVisible ? "Minimize" : "Show"} game log`);
+      gameLogToggle.title = `${logVisible ? "Minimize" : "Show"} game log`;
+      helpToggle.setAttribute("aria-expanded", String(helpVisible));
+      helpToggle.setAttribute("aria-label", `${helpVisible ? "Hide" : "Show"} game rules`);
+      helpToggle.title = `${helpVisible ? "Hide" : "Show"} game rules`;
+    }
+
+    function setGameLogVisible(visible) {
+      gameLogPanel.hidden = !visible;
+      if (visible) {
+        helpPanel.hidden = true;
+      }
+      updatePanelControls();
+    }
+
+    function setHelpVisible(visible) {
+      helpPanel.hidden = !visible;
+      if (visible) {
+        gameLogPanel.hidden = true;
+      }
+      updatePanelControls();
+    }
+
     function setReducedTileCounts(reduced) {
       reducedTileCounts = reduced;
       updatePileCounts();
+      constrainAttackToAvailableTiles();
       updateView();
+      endTurnIfNoLegalBreaks();
     }
 
     function setTestingPanelOpen(open) {
@@ -1002,6 +2591,10 @@
     }
 
     function resetGame() {
+      clearBreakHighlight();
+      removedTileCounts.clear();
+      attackStacks.clear();
+      gameLogMessages.querySelectorAll(".game-log-entry").forEach(entry => entry.remove());
       players.forEach(player => {
         const playerId = player.dataset.player;
         getBoard(playerId).querySelectorAll(".cell").forEach((cell, index) => {
@@ -1009,6 +2602,7 @@
           cell.textContent = "";
           delete cell.dataset.element;
           delete cell.dataset.stockElement;
+          delete cell.dataset.attackCount;
           cell.setAttribute(
             "aria-label",
             `Player ${playerId}, row ${Math.floor(index / 3) + 1}, column ${index % 3 + 1}`
@@ -1020,6 +2614,13 @@
       activePlayer = "1";
       placementsThisTurn = 0;
       selectedTile = null;
+      draggedTile = null;
+      breakingPhase = false;
+      attackState = null;
+      airChoiceState = null;
+      waterMoveState = null;
+      earthRevealState = null;
+      selectedWaterMoveSource = null;
       gameOver = false;
       reducedTileCounts = false;
       reducedCountsToggle.checked = false;
@@ -1028,6 +2629,7 @@
       gameOverMessage.textContent =
         "A player cannot place two tiles on their board. Reset to play again.";
       setTestingPanelOpen(false);
+      appendGameLogMessage("Game reset.");
       updatePileCounts();
       startTurn();
       getBoard("1").querySelector(".cell").focus();
@@ -1039,8 +2641,32 @@
 
     undoButton.addEventListener("click", undoLastMove);
     resetGameButton.addEventListener("click", resetGame);
+    endTurnButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        if (button.dataset.player === activePlayer) {
+          if (earthRevealState) {
+            endEarthRevealPhase(true);
+          } else {
+            endBreakingPhase();
+          }
+        }
+      });
+    });
     countToggle.addEventListener("change", () => {
       setCountVisibility(countToggle.checked);
+    });
+    gameLogToggle.addEventListener("click", () => {
+      setGameLogVisible(gameLogPanel.hidden);
+    });
+    helpToggle.addEventListener("click", () => {
+      setHelpVisible(helpPanel.hidden);
+    });
+    closeHelpPanel.addEventListener("click", () => {
+      setHelpVisible(false);
+      helpToggle.focus();
+    });
+    soraBonusToggle.addEventListener("change", () => {
+      setSoraBonusVisibility(soraBonusToggle.checked);
     });
     reducedCountsToggle.addEventListener("change", () => {
       setReducedTileCounts(reducedCountsToggle.checked);
@@ -1071,6 +2697,27 @@
           return;
         }
 
+        if (attackState) {
+          selectedTile = {
+            player: attackState.attacker,
+            targetPlayer: attackState.targetPlayer,
+            type: pile.dataset.element,
+            stockElement: pile.dataset.element,
+            pile,
+            attack: true
+          };
+          updateView(
+            `${elements[selectedTile.type].name} attack tile selected from Player ${selectedTile.targetPlayer}'s pile. Choose an empty or attacked square (${attackState.remaining} remaining).`,
+            selectedTile.player
+          );
+          return;
+        }
+
+        if (airChoiceState) {
+          chooseAirEffect(pile.dataset.element);
+          return;
+        }
+
         selectedTile = {
           player: pile.dataset.player,
           type: Number(pile.dataset.count) > 0 ? pile.dataset.element : "sora",
@@ -1078,12 +2725,33 @@
           pile
         };
         updateView(
-          `${elements[selectedTile.type].name} selected. Choose an empty square on your board (${placementsThisTurn} of 2 placed).`
+          `${elements[selectedTile.type].name} selected. Choose an empty square on your board (${placementsThisTurn} of 2 placed).`,
+          selectedTile.player
         );
         return;
       }
 
       const cell = closestElement(event.target, ".cell");
+      if (cell && earthRevealState) {
+        handleEarthRevealCell(cell);
+        return;
+      }
+
+      if (cell && waterMoveState) {
+        handleWaterMoveCell(cell);
+        return;
+      }
+
+      if (cell && breakingPhase && !attackState && !airChoiceState && !waterMoveState && !earthRevealState) {
+        breakFormation(cell);
+        return;
+      }
+
+      if (cell && attackState && selectedTile?.attack) {
+        placeAttackTile(selectedTile, cell);
+        return;
+      }
+
       if (cell && selectedTile) {
         placeTile(selectedTile.player, selectedTile.type, cell, selectedTile.stockElement);
       }
@@ -1091,13 +2759,23 @@
 
     document.addEventListener("dragstart", event => {
       const pile = closestElement(event.target, ".tile-pile");
-      if (!pile || pile.disabled || gameOver) {
+      if (!pile || pile.disabled || gameOver || airChoiceState) {
         event.preventDefault();
         return;
       }
 
       selectedTile = null;
-      const type = Number(pile.dataset.count) > 0 ? pile.dataset.element : "sora";
+      const isAttack = Boolean(attackState);
+      const type = isAttack
+        ? pile.dataset.element
+        : Number(pile.dataset.count) > 0 ? pile.dataset.element : "sora";
+      draggedTile = {
+        player: isAttack ? attackState.attacker : pile.dataset.player,
+        type,
+        stockElement: pile.dataset.element,
+        attack: isAttack,
+        targetPlayer: isAttack ? attackState.targetPlayer : null
+      };
       event.dataTransfer.setData(
         "text/plain",
         `${pile.dataset.player}:${pile.dataset.element}:${type}`
@@ -1119,19 +2797,54 @@
     document.addEventListener("dragend", () => {
       dragPreview?.remove();
       dragPreview = null;
+      draggedTile = null;
       clearDragHighlight();
+      updateView();
     });
 
     document.querySelectorAll(".grid").forEach(grid => {
+      grid.addEventListener("pointerover", event => {
+        const cell = closestElement(event.target, ".cell");
+        if (cell) {
+          highlightBreakFormation(cell);
+        }
+      });
+
+      grid.addEventListener("pointerleave", clearBreakHighlight);
+      grid.addEventListener("focusin", event => {
+        const cell = closestElement(event.target, ".cell");
+        if (cell) {
+          highlightBreakFormation(cell);
+        }
+      });
+      grid.addEventListener("focusout", clearBreakHighlight);
+
       grid.addEventListener("dragover", event => {
         const cell = closestElement(event.target, ".cell");
-        if (!cell || gameOver || grid.dataset.player !== activePlayer || cell.classList.contains("occupied")) {
+        const isAttackDrop = Boolean(
+          cell
+          && attackState
+          && draggedTile?.attack
+          && grid.dataset.player === attackState.targetPlayer
+          && isAttackTargetCell(cell, attackState.targetPlayer)
+        );
+        const isNormalDrop = Boolean(
+          cell
+          && !attackState
+          && !breakingPhase
+          && grid.dataset.player === activePlayer
+          && !cell.classList.contains("occupied")
+          && !cell.classList.contains("attacked")
+        );
+        if (!cell || gameOver || (!isAttackDrop && !isNormalDrop)) {
           clearDragHighlight();
           return;
         }
 
+        const forbidden = !isAttackDrop && draggedTile
+          && isForbiddenPlacement(grid, cell, draggedTile.type);
         event.preventDefault();
-        event.dataTransfer.dropEffect = "move";
+        event.dataTransfer.dropEffect = forbidden ? "none" : "move";
         if (highlightedCell && highlightedCell !== cell) {
           highlightedCell.classList.remove("drag-over");
         }
@@ -1154,12 +2867,18 @@
 
         event.preventDefault();
         clearDragHighlight();
-        const [player, stockElement, type] = event.dataTransfer.getData("text/plain").split(":");
-        placeTile(player, type, cell, stockElement);
+        if (draggedTile?.attack) {
+          placeAttackTile(draggedTile, cell);
+        } else {
+          const [player, stockElement, type] = event.dataTransfer.getData("text/plain").split(":");
+          placeTile(player, type, cell, stockElement);
+        }
       });
     });
 
     setCountVisibility(countToggle.checked);
+    setSoraBonusVisibility(soraBonusToggle.checked);
+    updatePanelControls();
     sizeTilePiles();
     window.addEventListener("resize", sizeTilePiles);
     startTurn();
