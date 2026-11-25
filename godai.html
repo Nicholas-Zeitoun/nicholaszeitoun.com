@@ -1062,7 +1062,7 @@
   >
     <section class="game-over-card">
       <h2 id="game-over-title">Game over</h2>
-      <p id="game-over-message">A player cannot place two tiles on their board. Reset to play again.</p>
+      <p id="game-over-message">A player cannot place the required tiles on their board. Reset to play again.</p>
       <button class="game-over-reset" id="reset-game" type="button">Reset game</button>
     </section>
   </div>
@@ -1096,8 +1096,9 @@
         <h3>Your turn</h3>
         <ul>
           <li>Place two tiles on your board.</li>
+          <li>Player 2 may place three tiles on their first turn only.</li>
           <li>Then break one connected formation of at least two matching elements, or end your turn. If you have no legal formation, your turn ends automatically.</li>
-          <li>You lose if you cannot place two tiles because you do not have enough tiles or empty spaces.</li>
+          <li>You lose if you cannot place the required tiles (three on Player 2's first turn, two on every other turn) because you do not have enough tiles or empty spaces.</li>
           <li>A placement cannot create a connected group larger than five tiles.</li>
         </ul>
       </section>
@@ -1194,6 +1195,7 @@
     let reducedTileCounts = false;
     let activePlayer = "1";
     let placementsThisTurn = 0;
+    let playerTwoFirstTurn = true;
     let selectedTile = null;
     let draggedTile = null;
     let breakingPhase = false;
@@ -1796,17 +1798,22 @@
       }
     }
 
+    function getRequiredPlacements(player = activePlayer) {
+      return player === "2" && playerTwoFirstTurn ? 3 : 2;
+    }
+
     function startTurn() {
+      const requiredPlacements = getRequiredPlacements();
       const emptyCells = getBoard(activePlayer)
         .querySelectorAll(".cell:not(.occupied):not(.attacked)").length;
       const availableTiles = getAvailableTileCount(activePlayer);
       const reasons = [];
 
-      if (emptyCells < 2) {
-        reasons.push("fewer than two empty spaces");
+      if (emptyCells < requiredPlacements) {
+        reasons.push(`fewer than ${requiredPlacements} empty spaces`);
       }
-      if (availableTiles < 2) {
-        reasons.push("fewer than two playable tiles");
+      if (availableTiles < requiredPlacements) {
+        reasons.push(`fewer than ${requiredPlacements} playable tiles`);
       }
 
       if (reasons.length > 0) {
@@ -1815,12 +1822,15 @@
         selectedTile = null;
         gameOverTitle.textContent = `Player ${winner} wins!`;
         gameOverMessage.textContent =
-          `Player ${activePlayer} cannot place two tiles this turn because there are ${reasons.join(" and ")}.`;
+          `Player ${activePlayer} cannot place ${requiredPlacements} tiles this turn because there are ${reasons.join(" and ")}.`;
         gameOverScreen.hidden = false;
         resetGameButton.focus();
         appendGameLogMessage(`${gameOverTitle.textContent} ${gameOverMessage.textContent}`);
       } else {
-        appendGameLogMessage(`Player ${activePlayer}'s turn begins. Place two tiles.`, activePlayer);
+        appendGameLogMessage(
+          `Player ${activePlayer}'s turn begins. Place ${requiredPlacements} tiles.`,
+          activePlayer
+        );
       }
 
       updateView();
@@ -2012,6 +2022,9 @@
       );
       breakingPhase = false;
       placementsThisTurn = 0;
+      if (activePlayer === "2" && playerTwoFirstTurn) {
+        playerTwoFirstTurn = false;
+      }
       activePlayer = activePlayer === "1" ? "2" : "1";
       selectedTile = null;
       selectedWaterMoveSource = null;
@@ -2392,7 +2405,7 @@
       selectedTile = null;
       placementsThisTurn += 1;
 
-      if (placementsThisTurn === 2 || !hasEmptyCell(player)) {
+      if (placementsThisTurn === getRequiredPlacements(player) || !hasEmptyCell(player)) {
         beginBreakingPhase();
       } else {
         updateView();
@@ -2532,7 +2545,7 @@
       breakingPhase = move.previousBreakingPhase;
 
       updateView(
-        `Last tile placement undone. Player ${activePlayer}'s turn (${placementsThisTurn} of 2 placed).`,
+        `Last tile placement undone. Player ${activePlayer}'s turn (${placementsThisTurn} of ${getRequiredPlacements()} placed).`,
         activePlayer
       );
     }
@@ -2613,6 +2626,7 @@
       moveHistory.length = 0;
       activePlayer = "1";
       placementsThisTurn = 0;
+      playerTwoFirstTurn = true;
       selectedTile = null;
       draggedTile = null;
       breakingPhase = false;
@@ -2627,7 +2641,7 @@
       gameOverScreen.hidden = true;
       gameOverTitle.textContent = "Game over";
       gameOverMessage.textContent =
-        "A player cannot place two tiles on their board. Reset to play again.";
+        "A player cannot place the required tiles on their board. Reset to play again.";
       setTestingPanelOpen(false);
       appendGameLogMessage("Game reset.");
       updatePileCounts();
@@ -2725,7 +2739,7 @@
           pile
         };
         updateView(
-          `${elements[selectedTile.type].name} selected. Choose an empty square on your board (${placementsThisTurn} of 2 placed).`,
+          `${elements[selectedTile.type].name} selected. Choose an empty square on your board (${placementsThisTurn} of ${getRequiredPlacements()} placed).`,
           selectedTile.player
         );
         return;
